@@ -1,0 +1,582 @@
+{
+  "restaurant": "Ember & Basil",
+  "categories": [
+    {
+      "name": "Starters",
+      "position": 0,
+      "items": [
+        {
+          "name": "Chicken Satay",
+          "description": "Grilled turmeric chicken skewers with warm peanut sauce and pickled cucumber.",
+          "price_cents": 1150,
+          "dietary_tags": [
+            "halal",
+            "dairy_free"
+          ],
+          "allergens": [
+            "peanut",
+            "soy"
+          ],
+          "spice_level": 1
+        },
+        {
+          "name": "Crispy Calamari",
+          "description": "Lightly dusted squid with lemon aioli. Fried in a shared fryer with the fish and chips and onion rings.",
+          "price_cents": 1250,
+          "dietary_tags": [
+            "dairy_free"
+          ],
+          "allergens": [
+            "gluten",
+            "egg",
+            "shellfish"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Burrata & Heirloom Tomato",
+          "description": "Creamy burrata with basil-pine nut pesto and balsamic. Made with vegetarian-friendly cheese.",
+          "price_cents": 1400,
+          "dietary_tags": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "allergens": [
+            "dairy",
+            "tree_nut",
+            "sulphites"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Edamame",
+          "description": "Steamed soybeans with flaky sea salt and chilli flakes.",
+          "price_cents": 700,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "halal",
+            "dairy_free"
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "spice_level": 1
+        },
+        {
+          "name": "Pork Belly Bao",
+          "description": "Two steamed buns with glazed pork belly, hoisin and pickled mustard greens.",
+          "price_cents": 1300,
+          "dietary_tags": [
+            "dairy_free"
+          ],
+          "allergens": [
+            "gluten",
+            "soy",
+            "sesame",
+            "mustard"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Roasted Cauliflower Hummus",
+          "description": "Whipped chickpea hummus, roasted cauliflower, za'atar and olive oil, with gluten-free crackers.",
+          "price_cents": 1050,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "halal",
+            "dairy_free"
+          ],
+          "allergens": [
+            "sesame"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Tuna Tartare",
+          "description": "Sushi-grade tuna, avocado, sesame, ponzu and wonton crisps.",
+          "price_cents": 1600,
+          "dietary_tags": [
+            "dairy_free"
+          ],
+          "allergens": [
+            "fish",
+            "soy",
+            "sesame",
+            "gluten",
+            "egg"
+          ],
+          "spice_level": 1
+        },
+        {
+          "name": "Tomato Basil Soup",
+          "description": "Slow-roasted tomato soup finished with cream.",
+          "price_cents": 900,
+          "dietary_tags": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "allergens": [
+            "dairy",
+            "celery"
+          ],
+          "spice_level": 0
+        }
+      ]
+    },
+    {
+      "name": "Bowls & Curries",
+      "position": 1,
+      "items": [
+        {
+          "name": "Thai Green Curry",
+          "description": "Coconut green curry with seasonal vegetables and Thai basil over jasmine rice. Made with fish sauce and shrimp paste.",
+          "price_cents": 1900,
+          "dietary_tags": [
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "fish",
+            "shellfish"
+          ],
+          "spice_level": 3
+        },
+        {
+          "name": "Vegan Buddha Bowl",
+          "description": "Brown rice, roasted sweet potato, edamame, avocado, pickled cabbage and tahini-lime dressing.",
+          "price_cents": 1750,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "soy",
+            "sesame"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Short Rib Rice Bowl",
+          "description": "Braised short rib, gochujang glaze, fried egg, kimchi and steamed rice.",
+          "price_cents": 2400,
+          "dietary_tags": [
+            "dairy_free"
+          ],
+          "allergens": [
+            "egg",
+            "soy",
+            "sesame",
+            "gluten",
+            "fish"
+          ],
+          "spice_level": 2
+        },
+        {
+          "name": "Spicy Tofu Stir-Fry",
+          "description": "Wok-fried tofu with Szechuan peppercorn, chilli and peppers over rice.",
+          "price_cents": 1750,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "soy",
+            "sesame"
+          ],
+          "spice_level": 3
+        },
+        {
+          "name": "Chicken Tikka Masala",
+          "description": "Charred chicken in creamy tomato masala with basmati rice.",
+          "price_cents": 2100,
+          "dietary_tags": [
+            "gluten_free",
+            "halal"
+          ],
+          "allergens": [
+            "dairy",
+            "tree_nut"
+          ],
+          "spice_level": 2
+        },
+        {
+          "name": "Mushroom Risotto",
+          "description": "Arborio rice with wild mushrooms and parmesan (vegetarian-friendly). Cooked with celery stock.",
+          "price_cents": 1950,
+          "dietary_tags": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "allergens": [
+            "dairy",
+            "celery"
+          ],
+          "spice_level": 0
+        }
+      ]
+    },
+    {
+      "name": "Mains",
+      "position": 2,
+      "items": [
+        {
+          "name": "Margherita Pizza",
+          "description": "Wood-fired base, San Marzano tomato, fior di latte and basil.",
+          "price_cents": 1700,
+          "dietary_tags": [
+            "vegetarian"
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Pesto Gnocchi",
+          "description": "Potato gnocchi in basil and pine-nut pesto with vegetarian-friendly parmesan and blistered tomatoes.",
+          "price_cents": 1850,
+          "dietary_tags": [
+            "vegetarian"
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "egg",
+            "tree_nut"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Miso Glazed Salmon",
+          "description": "Miso-glazed salmon with bok choy and sesame rice.",
+          "price_cents": 2800,
+          "dietary_tags": [
+            "dairy_free"
+          ],
+          "allergens": [
+            "fish",
+            "soy",
+            "sesame"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Lemon Herb Roast Chicken",
+          "description": "Half chicken with roasted potatoes, charred lemon and salsa verde.",
+          "price_cents": 2300,
+          "dietary_tags": [
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "mustard"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Fish and Chips",
+          "description": "Beer-battered cod, thick-cut chips, mushy peas and tartare sauce. Fried in a shared fryer with the calamari and onion rings.",
+          "price_cents": 2200,
+          "dietary_tags": [
+            "dairy_free"
+          ],
+          "allergens": [
+            "gluten",
+            "fish",
+            "egg",
+            "mustard",
+            "sulphites"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Lamb Kofta Plate",
+          "description": "Spiced lamb kofta, saffron rice, cucumber yoghurt and flatbread.",
+          "price_cents": 2500,
+          "dietary_tags": [
+            "halal"
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "sesame"
+          ],
+          "spice_level": 1
+        },
+        {
+          "name": "Beef Burger",
+          "description": "Smashed beef patty, cheddar, pickles and house sauce on a brioche bun.",
+          "price_cents": 1900,
+          "dietary_tags": [],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "egg",
+            "mustard",
+            "sesame"
+          ],
+          "spice_level": 0
+        }
+      ]
+    },
+    {
+      "name": "Sides",
+      "position": 3,
+      "items": [
+        {
+          "name": "Shoestring Fries",
+          "description": "Crisp fries with sea salt. Cooked in a dedicated gluten-free fryer.",
+          "price_cents": 700,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 0
+        },
+        {
+          "name": "Onion Rings",
+          "description": "Beer-battered onion rings. Fried in a shared fryer with the calamari and fish.",
+          "price_cents": 800,
+          "dietary_tags": [
+            "vegetarian"
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "egg",
+            "sulphites"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Garlic Greens",
+          "description": "Wok-tossed broccolini and green beans with garlic and chilli oil.",
+          "price_cents": 750,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 1
+        },
+        {
+          "name": "Steamed Jasmine Rice",
+          "description": "Fragrant steamed rice.",
+          "price_cents": 400,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 0
+        },
+        {
+          "name": "House Kimchi",
+          "description": "House-fermented napa cabbage kimchi, made with fish sauce.",
+          "price_cents": 550,
+          "dietary_tags": [
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "fish",
+            "shellfish"
+          ],
+          "spice_level": 2
+        }
+      ]
+    },
+    {
+      "name": "Desserts",
+      "position": 4,
+      "items": [
+        {
+          "name": "Sticky Toffee Pudding",
+          "description": "Warm date sponge with butterscotch sauce and vanilla ice cream.",
+          "price_cents": 1000,
+          "dietary_tags": [
+            "vegetarian"
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "egg"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Flourless Chocolate Torte",
+          "description": "Dark chocolate torte with raspberry coulis. Made with almond flour.",
+          "price_cents": 1050,
+          "dietary_tags": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "allergens": [
+            "dairy",
+            "egg",
+            "tree_nut",
+            "soy"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Mango Sorbet",
+          "description": "Two scoops of Alphonso mango sorbet.",
+          "price_cents": 750,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 0
+        },
+        {
+          "name": "Matcha Panna Cotta",
+          "description": "Silky matcha cream with black sesame crumble.",
+          "price_cents": 950,
+          "dietary_tags": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "allergens": [
+            "dairy",
+            "sesame"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Coconut Rice Pudding",
+          "description": "Coconut milk rice pudding with toasted coconut and lime.",
+          "price_cents": 850,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 0
+        }
+      ]
+    },
+    {
+      "name": "Drinks",
+      "position": 5,
+      "items": [
+        {
+          "name": "Fresh Lemonade",
+          "description": "House-squeezed lemonade with mint.",
+          "price_cents": 500,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 0
+        },
+        {
+          "name": "Mango Lassi",
+          "description": "Yoghurt, mango and cardamom.",
+          "price_cents": 650,
+          "dietary_tags": [
+            "vegetarian",
+            "gluten_free",
+            "halal"
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Oat Milk Latte",
+          "description": "Double espresso with steamed oat milk. Oat milk contains gluten.",
+          "price_cents": 550,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Iced Jasmine Tea",
+          "description": "Cold-brewed jasmine green tea, unsweetened.",
+          "price_cents": 450,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 0
+        },
+        {
+          "name": "Ginger Beer",
+          "description": "Spicy non-alcoholic house ginger beer.",
+          "price_cents": 600,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [],
+          "spice_level": 1
+        },
+        {
+          "name": "Pinot Grigio (glass)",
+          "description": "Dry Italian white wine.",
+          "price_cents": 1100,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free"
+          ],
+          "allergens": [
+            "sulphites"
+          ],
+          "spice_level": 0
+        }
+      ]
+    }
+  ]
+}
