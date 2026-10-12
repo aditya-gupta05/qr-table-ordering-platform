@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { describeError, toApiError } from '../api/client'
-import { listKitchenOrders, updateOrderStatus } from '../api/endpoints'
-import type { Order, OrderEnvelope, OrderStatus } from '../api/types'
+import { listKitchenOrders, listWaiterRequests, updateOrderStatus, updateWaiterRequest } from '../api/endpoints'
+import type { Order, OrderEnvelope, OrderStatus, WaiterRequest } from '../api/types'
 import { ConnectionBadge } from '../components/ConnectionBadge'
 import { Lane } from '../components/kitchen/Lane'
+import { WaiterRequests } from '../components/kitchen/WaiterRequests'
 import { useLiveSocket } from '../hooks/useLiveSocket'
 import { useNow } from '../hooks/useNow'
 import { applyOrderToBoard, ACTIVE_STATUSES, sortByAge, type Board } from '../lib/orderStore'
-import { parseFrame } from '../api/ws'
+import { parseFrame, toMillis } from '../api/ws'
 
 const FRESH_MS = 8000
 
@@ -26,6 +27,11 @@ export default function Kitchen() {
   // While a snapshot is loading, live events are queued and applied after it, so none are lost.
   const syncing = useRef(false)
   const queued = useRef<OrderEnvelope[]>([])
+
+  const [waiters, setWaiters] = useState<ReadonlyMap<number, WaiterRequest>>(() => new Map())
+  const [waiterFresh, setWaiterFresh] = useState<Set<number>>(() => new Set())
+  const [waiterPending, setWaiterPending] = useState<Set<number>>(() => new Set())
+  const waiterInFlight = useRef<Set<number>>(new Set())
 
   const sync = useCallback(async () => {
     const mine = ++generation.current
@@ -49,9 +55,54 @@ export default function Kitchen() {
     }
   }, [])
 
+  // Snapshot of open and acknowledged requests. Requests stay on the strip until closed.
+  const syncWaiters = useCallback(async () => {
+    try {
+      const [open, acknowledged] = await Promise.all([listWaiterRequests('open'), listWaiterRequests('acknowledged')])
+      setWaiters((prev) => {
+        const next = new Map<number, WaiterRequest>()
+        for (const w of [...open, ...acknowledged]) {
+          const held = prev.get(w.id)
+          next.set(w.id, held && toMillis(held.updated_at) > toMillis(w.updated_at) ? held : w)
+        }
+        return next
+      })
+    } catch (e) {
+      setNotice(describeError(e, 'Cannot load waiter requests. Retrying when the connection is back.'))
+    }
+  }, [])
+
   useEffect(() => {
     void sync()
-  }, [sync])
+    void syncWaiters()
+  }, [sync, syncWaiters])
+
+  useEffect(() => {
+    if (waiterFresh.size === 0) return
+    const t = window.setTimeout(() => setWaiterFresh(new Set()), FRESH_MS)
+    return () => window.clearTimeout(t)
+  }, [waiterFresh])
+
+  // Keeps the newer version of a request. A closed request leaves the strip.
+  const putWaiter = useCallback((w: WaiterRequest, isNew: boolean) => {
+    if (w.status === 'closed') {
+      setWaiters((prev) => {
+        if (!prev.has(w.id)) return prev
+        const next = new Map(prev)
+        next.delete(w.id)
+        return next
+      })
+      return
+    }
+    setWaiters((prev) => {
+      const held = prev.get(w.id)
+      if (held && toMillis(held.updated_at) > toMillis(w.updated_at)) return prev
+      const next = new Map(prev)
+      next.set(w.id, w)
+      return next
+    })
+    if (isNew) setWaiterFresh((s) => new Set(s).add(w.id))
+  }, [])
 
   useEffect(() => {
     if (fresh.size === 0) return
@@ -75,12 +126,18 @@ export default function Kitchen() {
   const live = useLiveSocket('/ws/kitchen', {
     onOpen: () => {
       void sync()
+      void syncWaiters()
     },
     onMessage: (raw) => {
       const frame = parseFrame(raw)
       if (!frame) return
+      if ('waiter_request' in frame) {
+        putWaiter(frame.waiter_request, frame.type === 'waiter.requested')
+        return
+      }
       if (frame.type === 'resync') {
         void sync()
+        void syncWaiters()
         return
       }
       if (syncing.current) {
@@ -122,6 +179,23 @@ export default function Kitchen() {
     }
   }
 
+  const changeWaiter = async (w: WaiterRequest, status: 'acknowledged' | 'closed') => {
+    if (waiterInFlight.current.has(w.id)) return
+    waiterInFlight.current.add(w.id)
+    setWaiterPending(new Set(waiterInFlight.current))
+    try {
+      putWaiter(await updateWaiterRequest(w.id, status), false)
+    } catch (e) {
+      setNotice(`Table ${w.table_label}: ${toApiError(e).messages[0] ?? 'update failed'}. The list was refreshed.`)
+      void syncWaiters()
+    } finally {
+      waiterInFlight.current.delete(w.id)
+      setWaiterPending(new Set(waiterInFlight.current))
+    }
+  }
+
+  const waiterList = [...waiters.values()].sort((a, b) => a.created_at.localeCompare(b.created_at) || a.id - b.id)
+
   const sorted = sortByAge(board)
   const byStatus = (s: OrderStatus) => sorted.filter((o) => o.status === s)
   const clock = new Date(now).toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' })
@@ -145,6 +219,15 @@ export default function Kitchen() {
         </p>
       )}
       {!loaded && !loadError && <p className="px-6 text-xl text-chalk-dim">Loading orders…</p>}
+
+      <WaiterRequests
+        items={waiterList}
+        now={now}
+        fresh={waiterFresh}
+        pending={waiterPending}
+        onAcknowledge={(w) => void changeWaiter(w, 'acknowledged')}
+        onClose={(w) => void changeWaiter(w, 'closed')}
+      />
 
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 px-6 pb-6 md:grid-cols-3">
         <Lane

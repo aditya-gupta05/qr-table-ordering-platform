@@ -3,10 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { ApiError, describeError, toApiError } from '../api/client'
 import { createOrder, getMenu, getTable } from '../api/endpoints'
 import type { Allergen, DietaryTag, MenuCategory, MenuItem, OrderIn, TableOut } from '../api/types'
-import { AskPlaceholder } from '../components/diner/AskPlaceholder'
 import { CartBar } from '../components/diner/CartBar'
 import { CartSheet } from '../components/diner/CartSheet'
 import { CategoryNav } from '../components/diner/CategoryNav'
+import { ChatPanel } from '../components/diner/ChatPanel'
 import { FilterPanel } from '../components/diner/FilterPanel'
 import { MenuItemRow } from '../components/diner/MenuItemRow'
 import { RESTAURANT_NAME } from '../config'
@@ -174,7 +174,7 @@ export default function Diner() {
           </p>
         )}
 
-        <AskPlaceholder />
+        <ChatPanel token={token} cart={cart} />
         <div className="mt-5">
           <FilterPanel avoid={avoid} dietary={dietary} onAvoid={setAvoid} onDietary={setDietary} />
         </div>

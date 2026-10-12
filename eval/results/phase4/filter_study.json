@@ -1,0 +1,1343 @@
+{
+  "generated_utc": "2026-10-11T23:23:30.644603+00:00",
+  "host_load": [
+    13.025390625,
+    7.12451171875,
+    5.66943359375
+  ],
+  "safety": {
+    "fixed_128_o30|vector|filters_off": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 46,
+      "hits": 510,
+      "unsafe_hits": 161,
+      "unsafe_hit_rate": 0.3157
+    },
+    "fixed_128_o30|vector|filters_on": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 0,
+      "hits": 510,
+      "unsafe_hits": 0,
+      "unsafe_hit_rate": 0.0
+    },
+    "fixed_128_o30|hybrid|filters_off": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 45,
+      "hits": 510,
+      "unsafe_hits": 117,
+      "unsafe_hit_rate": 0.2294
+    },
+    "fixed_128_o30|hybrid|filters_on": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 0,
+      "hits": 510,
+      "unsafe_hits": 0,
+      "unsafe_hit_rate": 0.0
+    },
+    "recursive_256_o15|vector|filters_off": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 47,
+      "hits": 510,
+      "unsafe_hits": 174,
+      "unsafe_hit_rate": 0.3412
+    },
+    "recursive_256_o15|vector|filters_on": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 0,
+      "hits": 510,
+      "unsafe_hits": 0,
+      "unsafe_hit_rate": 0.0
+    },
+    "recursive_256_o15|hybrid|filters_off": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 45,
+      "hits": 510,
+      "unsafe_hits": 163,
+      "unsafe_hit_rate": 0.3196
+    },
+    "recursive_256_o15|hybrid|filters_on": {
+      "queries": 51,
+      "queries_with_unsafe_hit": 0,
+      "hits": 510,
+      "unsafe_hits": 0,
+      "unsafe_hit_rate": 0.0
+    }
+  },
+  "overlink": {
+    "fixed_128_o0": {
+      "chunks": 135,
+      "mean_tokens": 125.4,
+      "linked_share": 0.444,
+      "mean_linked_items": 1.22,
+      "mean_dropped_share": 0.1531,
+      "mean_mixed_share_of_dropped": 0.814,
+      "collateral_label_loss_mean": 0.1866,
+      "collateral_label_loss_max": 0.375,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 29,
+          "dropped_mixed": 23,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 15
+        },
+        "dairy": {
+          "dropped": 35,
+          "dropped_mixed": 28,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 21
+        },
+        "egg": {
+          "dropped": 26,
+          "dropped_mixed": 21,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 12
+        },
+        "peanut": {
+          "dropped": 10,
+          "dropped_mixed": 8,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 5
+        },
+        "tree_nut": {
+          "dropped": 12,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 5
+        },
+        "soy": {
+          "dropped": 27,
+          "dropped_mixed": 21,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 13
+        },
+        "fish": {
+          "dropped": 26,
+          "dropped_mixed": 22,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 8
+        },
+        "shellfish": {
+          "dropped": 18,
+          "dropped_mixed": 16,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 6
+        },
+        "sesame": {
+          "dropped": 26,
+          "dropped_mixed": 21,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 16
+        },
+        "mustard": {
+          "dropped": 13,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 9
+        },
+        "celery": {
+          "dropped": 10,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 7
+        },
+        "sulphites": {
+          "dropped": 16,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 9
+        }
+      }
+    },
+    "fixed_128_o15": {
+      "chunks": 157,
+      "mean_tokens": 126.0,
+      "linked_share": 0.452,
+      "mean_linked_items": 1.28,
+      "mean_dropped_share": 0.1555,
+      "mean_mixed_share_of_dropped": 0.822,
+      "collateral_label_loss_mean": 0.1534,
+      "collateral_label_loss_max": 0.2679,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 37,
+          "dropped_mixed": 29,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 11
+        },
+        "dairy": {
+          "dropped": 40,
+          "dropped_mixed": 35,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 15
+        },
+        "egg": {
+          "dropped": 28,
+          "dropped_mixed": 22,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 8
+        },
+        "peanut": {
+          "dropped": 12,
+          "dropped_mixed": 9,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 5
+        },
+        "tree_nut": {
+          "dropped": 15,
+          "dropped_mixed": 14,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 4
+        },
+        "soy": {
+          "dropped": 33,
+          "dropped_mixed": 26,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 13
+        },
+        "fish": {
+          "dropped": 33,
+          "dropped_mixed": 28,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 10
+        },
+        "shellfish": {
+          "dropped": 21,
+          "dropped_mixed": 18,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 6
+        },
+        "sesame": {
+          "dropped": 33,
+          "dropped_mixed": 29,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 14
+        },
+        "mustard": {
+          "dropped": 14,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 6
+        },
+        "celery": {
+          "dropped": 12,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 5
+        },
+        "sulphites": {
+          "dropped": 15,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 6
+        }
+      }
+    },
+    "fixed_128_o30": {
+      "chunks": 190,
+      "mean_tokens": 125.8,
+      "linked_share": 0.453,
+      "mean_linked_items": 1.25,
+      "mean_dropped_share": 0.1531,
+      "mean_mixed_share_of_dropped": 0.813,
+      "collateral_label_loss_mean": 0.1246,
+      "collateral_label_loss_max": 0.2857,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 46,
+          "dropped_mixed": 38,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 12
+        },
+        "dairy": {
+          "dropped": 48,
+          "dropped_mixed": 39,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 16
+        },
+        "egg": {
+          "dropped": 35,
+          "dropped_mixed": 29,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 9
+        },
+        "peanut": {
+          "dropped": 11,
+          "dropped_mixed": 7,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 3
+        },
+        "tree_nut": {
+          "dropped": 18,
+          "dropped_mixed": 17,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 2
+        },
+        "soy": {
+          "dropped": 39,
+          "dropped_mixed": 30,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 8
+        },
+        "fish": {
+          "dropped": 37,
+          "dropped_mixed": 31,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 6
+        },
+        "shellfish": {
+          "dropped": 26,
+          "dropped_mixed": 23,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 5
+        },
+        "sesame": {
+          "dropped": 40,
+          "dropped_mixed": 33,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 11
+        },
+        "mustard": {
+          "dropped": 19,
+          "dropped_mixed": 16,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 5
+        },
+        "celery": {
+          "dropped": 11,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 2
+        },
+        "sulphites": {
+          "dropped": 19,
+          "dropped_mixed": 14,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 5
+        }
+      }
+    },
+    "fixed_128_o30_h": {
+      "chunks": 218,
+      "mean_tokens": 114.5,
+      "linked_share": 0.427,
+      "mean_linked_items": 1.08,
+      "mean_dropped_share": 0.1399,
+      "mean_mixed_share_of_dropped": 0.773,
+      "collateral_label_loss_mean": 0.123,
+      "collateral_label_loss_max": 0.2857,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 48,
+          "dropped_mixed": 36,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 12
+        },
+        "dairy": {
+          "dropped": 52,
+          "dropped_mixed": 42,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 16
+        },
+        "egg": {
+          "dropped": 38,
+          "dropped_mixed": 29,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 10
+        },
+        "peanut": {
+          "dropped": 12,
+          "dropped_mixed": 8,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 4
+        },
+        "tree_nut": {
+          "dropped": 19,
+          "dropped_mixed": 16,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 2
+        },
+        "soy": {
+          "dropped": 39,
+          "dropped_mixed": 27,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 8
+        },
+        "fish": {
+          "dropped": 40,
+          "dropped_mixed": 32,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 5
+        },
+        "shellfish": {
+          "dropped": 25,
+          "dropped_mixed": 21,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 4
+        },
+        "sesame": {
+          "dropped": 41,
+          "dropped_mixed": 32,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 11
+        },
+        "mustard": {
+          "dropped": 21,
+          "dropped_mixed": 16,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 4
+        },
+        "celery": {
+          "dropped": 13,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 3
+        },
+        "sulphites": {
+          "dropped": 18,
+          "dropped_mixed": 13,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 4
+        }
+      }
+    },
+    "fixed_256_o0": {
+      "chunks": 69,
+      "mean_tokens": 245.3,
+      "linked_share": 0.522,
+      "mean_linked_items": 2.32,
+      "mean_dropped_share": 0.2379,
+      "mean_mixed_share_of_dropped": 0.947,
+      "collateral_label_loss_mean": 0.2851,
+      "collateral_label_loss_max": 0.4643,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 23,
+          "dropped_mixed": 22,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 22
+        },
+        "dairy": {
+          "dropped": 25,
+          "dropped_mixed": 25,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 26
+        },
+        "egg": {
+          "dropped": 18,
+          "dropped_mixed": 17,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 19
+        },
+        "peanut": {
+          "dropped": 9,
+          "dropped_mixed": 8,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 8
+        },
+        "tree_nut": {
+          "dropped": 12,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 11
+        },
+        "soy": {
+          "dropped": 22,
+          "dropped_mixed": 21,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 20
+        },
+        "fish": {
+          "dropped": 21,
+          "dropped_mixed": 20,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 20
+        },
+        "shellfish": {
+          "dropped": 15,
+          "dropped_mixed": 14,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 12
+        },
+        "sesame": {
+          "dropped": 20,
+          "dropped_mixed": 19,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 20
+        },
+        "mustard": {
+          "dropped": 11,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 14
+        },
+        "celery": {
+          "dropped": 7,
+          "dropped_mixed": 7,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 7
+        },
+        "sulphites": {
+          "dropped": 14,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 13
+        }
+      }
+    },
+    "fixed_256_o15": {
+      "chunks": 79,
+      "mean_tokens": 249.4,
+      "linked_share": 0.506,
+      "mean_linked_items": 2.42,
+      "mean_dropped_share": 0.2458,
+      "mean_mixed_share_of_dropped": 0.956,
+      "collateral_label_loss_mean": 0.3019,
+      "collateral_label_loss_max": 0.4464,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 26,
+          "dropped_mixed": 25,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 21
+        },
+        "dairy": {
+          "dropped": 29,
+          "dropped_mixed": 28,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 25
+        },
+        "egg": {
+          "dropped": 23,
+          "dropped_mixed": 22,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 21
+        },
+        "peanut": {
+          "dropped": 12,
+          "dropped_mixed": 11,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 11
+        },
+        "tree_nut": {
+          "dropped": 12,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 7
+        },
+        "soy": {
+          "dropped": 25,
+          "dropped_mixed": 24,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 19
+        },
+        "fish": {
+          "dropped": 26,
+          "dropped_mixed": 25,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 22
+        },
+        "shellfish": {
+          "dropped": 19,
+          "dropped_mixed": 18,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 18
+        },
+        "sesame": {
+          "dropped": 24,
+          "dropped_mixed": 23,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 23
+        },
+        "mustard": {
+          "dropped": 14,
+          "dropped_mixed": 14,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 14
+        },
+        "celery": {
+          "dropped": 10,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 10
+        },
+        "sulphites": {
+          "dropped": 13,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 12
+        }
+      }
+    },
+    "fixed_256_o30": {
+      "chunks": 95,
+      "mean_tokens": 250.2,
+      "linked_share": 0.526,
+      "mean_linked_items": 2.37,
+      "mean_dropped_share": 0.2456,
+      "mean_mixed_share_of_dropped": 0.951,
+      "collateral_label_loss_mean": 0.2765,
+      "collateral_label_loss_max": 0.3929,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 32,
+          "dropped_mixed": 31,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 20
+        },
+        "dairy": {
+          "dropped": 34,
+          "dropped_mixed": 34,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 22
+        },
+        "egg": {
+          "dropped": 29,
+          "dropped_mixed": 27,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 21
+        },
+        "peanut": {
+          "dropped": 16,
+          "dropped_mixed": 14,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 13
+        },
+        "tree_nut": {
+          "dropped": 15,
+          "dropped_mixed": 15,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 6
+        },
+        "soy": {
+          "dropped": 30,
+          "dropped_mixed": 28,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 17
+        },
+        "fish": {
+          "dropped": 31,
+          "dropped_mixed": 29,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 19
+        },
+        "shellfish": {
+          "dropped": 25,
+          "dropped_mixed": 23,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 18
+        },
+        "sesame": {
+          "dropped": 27,
+          "dropped_mixed": 26,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 19
+        },
+        "mustard": {
+          "dropped": 15,
+          "dropped_mixed": 15,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 13
+        },
+        "celery": {
+          "dropped": 9,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 5
+        },
+        "sulphites": {
+          "dropped": 17,
+          "dropped_mixed": 15,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 13
+        }
+      }
+    },
+    "fixed_512_o0": {
+      "chunks": 36,
+      "mean_tokens": 470.2,
+      "linked_share": 0.639,
+      "mean_linked_items": 4.22,
+      "mean_dropped_share": 0.3171,
+      "mean_mixed_share_of_dropped": 0.941,
+      "collateral_label_loss_mean": 0.39,
+      "collateral_label_loss_max": 0.5179,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 15,
+          "dropped_mixed": 14,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 29
+        },
+        "dairy": {
+          "dropped": 15,
+          "dropped_mixed": 15,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 29
+        },
+        "egg": {
+          "dropped": 12,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 26
+        },
+        "peanut": {
+          "dropped": 8,
+          "dropped_mixed": 7,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 17
+        },
+        "tree_nut": {
+          "dropped": 10,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 18
+        },
+        "soy": {
+          "dropped": 13,
+          "dropped_mixed": 12,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 24
+        },
+        "fish": {
+          "dropped": 14,
+          "dropped_mixed": 13,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 26
+        },
+        "shellfish": {
+          "dropped": 12,
+          "dropped_mixed": 11,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 19
+        },
+        "sesame": {
+          "dropped": 14,
+          "dropped_mixed": 14,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 27
+        },
+        "mustard": {
+          "dropped": 7,
+          "dropped_mixed": 7,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 17
+        },
+        "celery": {
+          "dropped": 7,
+          "dropped_mixed": 7,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 15
+        },
+        "sulphites": {
+          "dropped": 10,
+          "dropped_mixed": 8,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 16
+        }
+      }
+    },
+    "fixed_512_o15": {
+      "chunks": 42,
+      "mean_tokens": 469.0,
+      "linked_share": 0.595,
+      "mean_linked_items": 4.26,
+      "mean_dropped_share": 0.3155,
+      "mean_mixed_share_of_dropped": 0.944,
+      "collateral_label_loss_mean": 0.3932,
+      "collateral_label_loss_max": 0.5536,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 17,
+          "dropped_mixed": 16,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 28
+        },
+        "dairy": {
+          "dropped": 19,
+          "dropped_mixed": 18,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 31
+        },
+        "egg": {
+          "dropped": 14,
+          "dropped_mixed": 13,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 26
+        },
+        "peanut": {
+          "dropped": 9,
+          "dropped_mixed": 8,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 16
+        },
+        "tree_nut": {
+          "dropped": 10,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 14
+        },
+        "soy": {
+          "dropped": 15,
+          "dropped_mixed": 14,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 23
+        },
+        "fish": {
+          "dropped": 16,
+          "dropped_mixed": 15,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 26
+        },
+        "shellfish": {
+          "dropped": 14,
+          "dropped_mixed": 13,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 22
+        },
+        "sesame": {
+          "dropped": 16,
+          "dropped_mixed": 16,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 27
+        },
+        "mustard": {
+          "dropped": 10,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 20
+        },
+        "celery": {
+          "dropped": 8,
+          "dropped_mixed": 8,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 15
+        },
+        "sulphites": {
+          "dropped": 11,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 17
+        }
+      }
+    },
+    "fixed_512_o30": {
+      "chunks": 48,
+      "mean_tokens": 487.4,
+      "linked_share": 0.667,
+      "mean_linked_items": 4.75,
+      "mean_dropped_share": 0.3316,
+      "mean_mixed_share_of_dropped": 0.945,
+      "collateral_label_loss_mean": 0.3528,
+      "collateral_label_loss_max": 0.5179,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 21,
+          "dropped_mixed": 20,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 23
+        },
+        "dairy": {
+          "dropped": 22,
+          "dropped_mixed": 22,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 29
+        },
+        "egg": {
+          "dropped": 16,
+          "dropped_mixed": 15,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 21
+        },
+        "peanut": {
+          "dropped": 9,
+          "dropped_mixed": 8,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 12
+        },
+        "tree_nut": {
+          "dropped": 13,
+          "dropped_mixed": 13,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 13
+        },
+        "soy": {
+          "dropped": 18,
+          "dropped_mixed": 17,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 22
+        },
+        "fish": {
+          "dropped": 21,
+          "dropped_mixed": 20,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 27
+        },
+        "shellfish": {
+          "dropped": 18,
+          "dropped_mixed": 17,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 23
+        },
+        "sesame": {
+          "dropped": 18,
+          "dropped_mixed": 18,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 26
+        },
+        "mustard": {
+          "dropped": 12,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 19
+        },
+        "celery": {
+          "dropped": 9,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 8
+        },
+        "sulphites": {
+          "dropped": 14,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 14
+        }
+      }
+    },
+    "recursive_128_o15": {
+      "chunks": 205,
+      "mean_tokens": 100.9,
+      "linked_share": 0.395,
+      "mean_linked_items": 0.94,
+      "mean_dropped_share": 0.1215,
+      "mean_mixed_share_of_dropped": 0.745,
+      "collateral_label_loss_mean": 0.1362,
+      "collateral_label_loss_max": 0.3214,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 37,
+          "dropped_mixed": 26,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 10
+        },
+        "dairy": {
+          "dropped": 45,
+          "dropped_mixed": 31,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 18
+        },
+        "egg": {
+          "dropped": 32,
+          "dropped_mixed": 25,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 10
+        },
+        "peanut": {
+          "dropped": 10,
+          "dropped_mixed": 6,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 5
+        },
+        "tree_nut": {
+          "dropped": 15,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 4
+        },
+        "soy": {
+          "dropped": 33,
+          "dropped_mixed": 26,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 8
+        },
+        "fish": {
+          "dropped": 31,
+          "dropped_mixed": 25,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 6
+        },
+        "shellfish": {
+          "dropped": 20,
+          "dropped_mixed": 18,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 6
+        },
+        "sesame": {
+          "dropped": 34,
+          "dropped_mixed": 27,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 9
+        },
+        "mustard": {
+          "dropped": 14,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 5
+        },
+        "celery": {
+          "dropped": 11,
+          "dropped_mixed": 8,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 5
+        },
+        "sulphites": {
+          "dropped": 17,
+          "dropped_mixed": 13,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 6
+        }
+      }
+    },
+    "recursive_256_o15": {
+      "chunks": 103,
+      "mean_tokens": 200.0,
+      "linked_share": 0.466,
+      "mean_linked_items": 1.83,
+      "mean_dropped_share": 0.1958,
+      "mean_mixed_share_of_dropped": 0.932,
+      "collateral_label_loss_mean": 0.2574,
+      "collateral_label_loss_max": 0.4464,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 27,
+          "dropped_mixed": 25,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 15
+        },
+        "dairy": {
+          "dropped": 32,
+          "dropped_mixed": 31,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 25
+        },
+        "egg": {
+          "dropped": 23,
+          "dropped_mixed": 21,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 17
+        },
+        "peanut": {
+          "dropped": 10,
+          "dropped_mixed": 9,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 9
+        },
+        "tree_nut": {
+          "dropped": 12,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 8
+        },
+        "soy": {
+          "dropped": 27,
+          "dropped_mixed": 24,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 16
+        },
+        "fish": {
+          "dropped": 26,
+          "dropped_mixed": 25,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 20
+        },
+        "shellfish": {
+          "dropped": 20,
+          "dropped_mixed": 19,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 13
+        },
+        "sesame": {
+          "dropped": 26,
+          "dropped_mixed": 25,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 19
+        },
+        "mustard": {
+          "dropped": 14,
+          "dropped_mixed": 14,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 11
+        },
+        "celery": {
+          "dropped": 11,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 9
+        },
+        "sulphites": {
+          "dropped": 14,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 11
+        }
+      }
+    },
+    "recursive_256_o15_h": {
+      "chunks": 109,
+      "mean_tokens": 191.1,
+      "linked_share": 0.468,
+      "mean_linked_items": 1.75,
+      "mean_dropped_share": 0.1934,
+      "mean_mixed_share_of_dropped": 0.927,
+      "collateral_label_loss_mean": 0.2425,
+      "collateral_label_loss_max": 0.3636,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 30,
+          "dropped_mixed": 27,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 15
+        },
+        "dairy": {
+          "dropped": 31,
+          "dropped_mixed": 29,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 20
+        },
+        "egg": {
+          "dropped": 25,
+          "dropped_mixed": 24,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 17
+        },
+        "peanut": {
+          "dropped": 10,
+          "dropped_mixed": 9,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 8
+        },
+        "tree_nut": {
+          "dropped": 12,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 7
+        },
+        "soy": {
+          "dropped": 29,
+          "dropped_mixed": 26,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 17
+        },
+        "fish": {
+          "dropped": 28,
+          "dropped_mixed": 26,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 18
+        },
+        "shellfish": {
+          "dropped": 21,
+          "dropped_mixed": 20,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 12
+        },
+        "sesame": {
+          "dropped": 27,
+          "dropped_mixed": 25,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 20
+        },
+        "mustard": {
+          "dropped": 14,
+          "dropped_mixed": 13,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 10
+        },
+        "celery": {
+          "dropped": 11,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 8
+        },
+        "sulphites": {
+          "dropped": 15,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 11
+        }
+      }
+    },
+    "recursive_512_o15": {
+      "chunks": 50,
+      "mean_tokens": 405.8,
+      "linked_share": 0.58,
+      "mean_linked_items": 3.78,
+      "mean_dropped_share": 0.29,
+      "mean_mixed_share_of_dropped": 0.945,
+      "collateral_label_loss_mean": 0.3534,
+      "collateral_label_loss_max": 0.537,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 20,
+          "dropped_mixed": 19,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 23
+        },
+        "dairy": {
+          "dropped": 20,
+          "dropped_mixed": 20,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 30
+        },
+        "egg": {
+          "dropped": 15,
+          "dropped_mixed": 14,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 20
+        },
+        "peanut": {
+          "dropped": 10,
+          "dropped_mixed": 9,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 16
+        },
+        "tree_nut": {
+          "dropped": 11,
+          "dropped_mixed": 11,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 14
+        },
+        "soy": {
+          "dropped": 19,
+          "dropped_mixed": 18,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 29
+        },
+        "fish": {
+          "dropped": 19,
+          "dropped_mixed": 18,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 27
+        },
+        "shellfish": {
+          "dropped": 16,
+          "dropped_mixed": 15,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 23
+        },
+        "sesame": {
+          "dropped": 16,
+          "dropped_mixed": 16,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 22
+        },
+        "mustard": {
+          "dropped": 9,
+          "dropped_mixed": 9,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 12
+        },
+        "celery": {
+          "dropped": 8,
+          "dropped_mixed": 8,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 8
+        },
+        "sulphites": {
+          "dropped": 11,
+          "dropped_mixed": 8,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 13
+        }
+      }
+    },
+    "sentence_256_o15": {
+      "chunks": 80,
+      "mean_tokens": 235.6,
+      "linked_share": 0.512,
+      "mean_linked_items": 2.3,
+      "mean_dropped_share": 0.2417,
+      "mean_mixed_share_of_dropped": 0.956,
+      "collateral_label_loss_mean": 0.2733,
+      "collateral_label_loss_max": 0.4286,
+      "n_dev_quotes": 58,
+      "per_allergen": {
+        "gluten": {
+          "dropped": 26,
+          "dropped_mixed": 25,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 21
+        },
+        "dairy": {
+          "dropped": 30,
+          "dropped_mixed": 29,
+          "safe_quotes": 56,
+          "safe_quotes_lost": 24
+        },
+        "egg": {
+          "dropped": 23,
+          "dropped_mixed": 22,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 19
+        },
+        "peanut": {
+          "dropped": 11,
+          "dropped_mixed": 10,
+          "safe_quotes": 57,
+          "safe_quotes_lost": 9
+        },
+        "tree_nut": {
+          "dropped": 13,
+          "dropped_mixed": 13,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 6
+        },
+        "soy": {
+          "dropped": 25,
+          "dropped_mixed": 24,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 17
+        },
+        "fish": {
+          "dropped": 24,
+          "dropped_mixed": 23,
+          "safe_quotes": 53,
+          "safe_quotes_lost": 18
+        },
+        "shellfish": {
+          "dropped": 18,
+          "dropped_mixed": 17,
+          "safe_quotes": 54,
+          "safe_quotes_lost": 14
+        },
+        "sesame": {
+          "dropped": 24,
+          "dropped_mixed": 23,
+          "safe_quotes": 55,
+          "safe_quotes_lost": 22
+        },
+        "mustard": {
+          "dropped": 14,
+          "dropped_mixed": 14,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 14
+        },
+        "celery": {
+          "dropped": 10,
+          "dropped_mixed": 10,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 9
+        },
+        "sulphites": {
+          "dropped": 14,
+          "dropped_mixed": 12,
+          "safe_quotes": 58,
+          "safe_quotes_lost": 11
+        }
+      }
+    }
+  }
+}

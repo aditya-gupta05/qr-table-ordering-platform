@@ -1,0 +1,234 @@
+{
+  "generated_utc": "2026-10-11T23:30:58.588446+00:00",
+  "host": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "cpus": 10,
+    "loadavg": [
+      3.89404296875,
+      5.0107421875,
+      5.18994140625
+    ]
+  },
+  "git_sha": "a9119832a0c4ffa6d812ffaefc61d577c3fad194",
+  "model": "BAAI/bge-small-en-v1.5",
+  "active_config": "fixed_128_o30",
+  "hnsw": {
+    "m": 16,
+    "ef_construction": 64
+  },
+  "index_rows_all_configs": 1616,
+  "index_bytes_all_configs": 3129344,
+  "rows_active_config": 190,
+  "active_only_index": {
+    "rows": 190,
+    "index_build_ms": 31.2,
+    "index_bytes": 401408
+  },
+  "n_configs_in_b": 15,
+  "n_queries": 39,
+  "k": 10,
+  "results": [
+    {
+      "scenario": "b_all_configs",
+      "iterative_scan": "off",
+      "ef_search": 40,
+      "n_queries_recall": 585,
+      "recall@10_mean": 0.2735,
+      "recall@10_min": 0.0,
+      "recall@10_active_config": 0.4436,
+      "share_queries_below_1": 1.0,
+      "latency_ms_active": {
+        "p50": 0.682,
+        "p95": 1.028,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "b_all_configs",
+      "iterative_scan": "off",
+      "ef_search": 100,
+      "n_queries_recall": 585,
+      "recall@10_mean": 0.6632,
+      "recall@10_min": 0.0,
+      "recall@10_active_config": 0.9359,
+      "share_queries_below_1": 0.8342,
+      "latency_ms_active": {
+        "p50": 0.818,
+        "p95": 1.075,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "b_all_configs",
+      "iterative_scan": "strict_order",
+      "ef_search": 40,
+      "n_queries_recall": 585,
+      "recall@10_mean": 0.9781,
+      "recall@10_min": 0.8,
+      "recall@10_active_config": 0.9795,
+      "share_queries_below_1": 0.1846,
+      "latency_ms_active": {
+        "p50": 0.87,
+        "p95": 1.333,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "b_all_configs",
+      "iterative_scan": "strict_order",
+      "ef_search": 100,
+      "n_queries_recall": 585,
+      "recall@10_mean": 0.9903,
+      "recall@10_min": 0.8,
+      "recall@10_active_config": 0.9872,
+      "share_queries_below_1": 0.0906,
+      "latency_ms_active": {
+        "p50": 0.914,
+        "p95": 1.283,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "b_all_configs",
+      "iterative_scan": "relaxed_order",
+      "ef_search": 40,
+      "n_queries_recall": 585,
+      "recall@10_mean": 0.9942,
+      "recall@10_min": 0.8,
+      "recall@10_active_config": 0.9846,
+      "share_queries_below_1": 0.0564,
+      "latency_ms_active": {
+        "p50": 0.781,
+        "p95": 1.009,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "b_all_configs",
+      "iterative_scan": "relaxed_order",
+      "ef_search": 100,
+      "n_queries_recall": 585,
+      "recall@10_mean": 0.9959,
+      "recall@10_min": 0.8,
+      "recall@10_active_config": 0.9872,
+      "share_queries_below_1": 0.0393,
+      "latency_ms_active": {
+        "p50": 0.808,
+        "p95": 1.152,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "a_active_only",
+      "iterative_scan": "off",
+      "ef_search": 40,
+      "n_queries_recall": 39,
+      "recall@10_mean": 0.9974,
+      "recall@10_min": 0.9,
+      "recall@10_active_config": 0.9974,
+      "share_queries_below_1": 0.0256,
+      "latency_ms_active": {
+        "p50": 0.606,
+        "p95": 0.721,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "a_active_only",
+      "iterative_scan": "off",
+      "ef_search": 100,
+      "n_queries_recall": 39,
+      "recall@10_mean": 1.0,
+      "recall@10_min": 1.0,
+      "recall@10_active_config": 1.0,
+      "share_queries_below_1": 0.0,
+      "latency_ms_active": {
+        "p50": 0.664,
+        "p95": 0.894,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "a_active_only",
+      "iterative_scan": "strict_order",
+      "ef_search": 40,
+      "n_queries_recall": 39,
+      "recall@10_mean": 0.9974,
+      "recall@10_min": 0.9,
+      "recall@10_active_config": 0.9974,
+      "share_queries_below_1": 0.0256,
+      "latency_ms_active": {
+        "p50": 0.613,
+        "p95": 0.811,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "a_active_only",
+      "iterative_scan": "strict_order",
+      "ef_search": 100,
+      "n_queries_recall": 39,
+      "recall@10_mean": 1.0,
+      "recall@10_min": 1.0,
+      "recall@10_active_config": 1.0,
+      "share_queries_below_1": 0.0,
+      "latency_ms_active": {
+        "p50": 0.705,
+        "p95": 1.191,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "a_active_only",
+      "iterative_scan": "relaxed_order",
+      "ef_search": 40,
+      "n_queries_recall": 39,
+      "recall@10_mean": 0.9974,
+      "recall@10_min": 0.9,
+      "recall@10_active_config": 0.9974,
+      "share_queries_below_1": 0.0256,
+      "latency_ms_active": {
+        "p50": 0.701,
+        "p95": 1.038,
+        "n": 195
+      }
+    },
+    {
+      "scenario": "a_active_only",
+      "iterative_scan": "relaxed_order",
+      "ef_search": 100,
+      "n_queries_recall": 39,
+      "recall@10_mean": 1.0,
+      "recall@10_min": 1.0,
+      "recall@10_active_config": 1.0,
+      "share_queries_below_1": 0.0,
+      "latency_ms_active": {
+        "p50": 0.731,
+        "p95": 1.124,
+        "n": 195
+      }
+    }
+  ],
+  "exact_seq_scan_latency_ms_active": {
+    "p50": 1.018,
+    "p95": 1.443,
+    "n": 195
+  },
+  "planner_default_latency_ms_active": {
+    "p50": 0.727,
+    "p95": 1.272,
+    "n": 195
+  },
+  "plans": {
+    "planner_default_all_configs": "Limit  (cost=782.66..782.68 rows=10 width=861)\n  InitPlan 1 (returns $0)\n    ->  Index Scan using chunk_configs_name_key on chunk_configs  (cost=0.15..8.17 rows=1 width=4)\n          Index Cond: (name = 'fixed_128_o30'::text)\n  ->  Sort  (cost=774.49..774.79 rows=120 width=861)\n        Sort Key: ((e.embedding <=> '[q]'::vector))\n        ->  Nested Loop  (cost=5.55..771.90 rows=120 width=861)\n              ->  Nested Loop  (cost=5.27..219.19 rows=108 width=853)\n                    ->  Bitmap Heap Scan on chunks ch  (cost=5.11..212.27 rows=108 width=789)\n                          Recheck Cond: (chunk_config_id = $0)\n                          ->  Bitmap Index Scan on ix_chunks_chunk_config_id  (cost=0.00..5.09 rows=108 width=0)\n                                Index Cond: (chunk_config_id = $0)\n                    ->  Memoize  (cost=0.16..0.62 rows=1 width=68)\n                          Cache Key: ch.document_id\n                          Cache Mode: logical\n                          ->  Index Scan using documents_pkey on documents d  (cost=0.15..0.61 rows=1 width=68)\n                                Index Cond: (id = ch.document_id)\n              ->  Index Scan using chunk_embeddings_pkey on chunk_embeddings e  (cost=0.28..5.11 rows=1 width=1552)\n                    Index Cond: ((chunk_id = ch.id) AND (model = 'BAAI/bge-small-en-v1.5'::text))",
+    "steered_hnsw_all_configs": "Limit  (cost=836.48..1276.31 rows=10 width=861)\n  InitPlan 1 (returns $0)\n    ->  Index Scan using chunk_configs_name_key on chunk_configs  (cost=0.15..8.17 rows=1 width=4)\n          Index Cond: (name = 'fixed_128_o30'::text)\n  ->  Nested Loop  (cost=828.32..6106.29 rows=120 width=861)\n        ->  Nested Loop  (cost=828.16..6098.76 rows=120 width=2333)\n              ->  Index Scan using ix_chunk_emb_hnsw_bge_small on chunk_embeddings e  (cost=827.87..4790.08 rows=1796 width=1552)\n                    Order By: (embedding <=> '[q]'::vector)\n              ->  Memoize  (cost=0.29..0.93 rows=1 width=789)\n                    Cache Key: e.chunk_id\n                    Cache Mode: logical\n                    ->  Index Scan using chunks_pkey on chunks ch  (cost=0.28..0.92 rows=1 width=789)\n                          Index Cond: (id = e.chunk_id)\n                          Filter: (chunk_config_id = $0)\n        ->  Memoize  (cost=0.16..0.62 rows=1 width=68)\n              Cache Key: ch.document_id\n              Cache Mode: logical\n              ->  Index Scan using documents_pkey on documents d  (cost=0.15..0.61 rows=1 width=68)\n                    Index Cond: (id = ch.document_id)",
+    "planner_default_active_only": "Limit  (cost=209.59..209.62 rows=10 width=644)\n  InitPlan 1 (returns $0)\n    ->  Seq Scan on chunk_configs  (cost=0.00..1.01 rows=1 width=4)\n          Filter: (name = 'fixed_128_o30'::text)\n  ->  Sort  (cost=208.58..209.06 rows=190 width=644)\n        Sort Key: ((e.embedding <=> '[q]'::vector))\n        ->  Hash Join  (cost=69.89..204.47 rows=190 width=644)\n              Hash Cond: (ch.document_id = d.id)\n              ->  Hash Join  (cost=68.75..202.01 rows=190 width=2159)\n                    Hash Cond: (e.chunk_id = ch.id)\n                    ->  Seq Scan on chunk_embeddings e  (cost=0.00..132.75 rows=190 width=1552)\n                          Filter: (model = 'BAAI/bge-small-en-v1.5'::text)\n                    ->  Hash  (cost=66.38..66.38 rows=190 width=615)\n                          ->  Seq Scan on chunks ch  (cost=0.00..66.38 rows=190 width=615)\n                                Filter: (chunk_config_id = $0)\n              ->  Hash  (cost=1.06..1.06 rows=6 width=25)\n                    ->  Seq Scan on documents d  (cost=0.00..1.06 rows=6 width=25)",
+    "steered_hnsw_active_only": "Limit  (cost=205.87..241.27 rows=10 width=644)\n  InitPlan 1 (returns $0)\n    ->  Index Scan using chunk_configs_name_idx on chunk_configs  (cost=0.12..8.14 rows=1 width=4)\n          Index Cond: (name = 'fixed_128_o30'::text)\n  ->  Nested Loop  (cost=197.72..870.45 rows=190 width=644)\n        ->  Nested Loop  (cost=197.58..864.14 rows=190 width=2159)\n              ->  Index Scan using ix_study_hnsw on chunk_embeddings e  (cost=197.43..639.33 rows=190 width=1552)\n                    Order By: (embedding <=> '[q]'::vector)\n              ->  Memoize  (cost=0.15..1.56 rows=1 width=615)\n                    Cache Key: e.chunk_id\n                    Cache Mode: logical\n                    ->  Index Scan using chunks_pkey on chunks ch  (cost=0.14..1.55 rows=1 width=615)\n                          Index Cond: (id = e.chunk_id)\n                          Filter: (chunk_config_id = $0)\n        ->  Memoize  (cost=0.14..0.22 rows=1 width=25)\n              Cache Key: ch.document_id\n              Cache Mode: logical\n              ->  Index Scan using documents_pkey on documents d  (cost=0.13..0.21 rows=1 width=25)\n                    Index Cond: (id = ch.document_id)"
+  },
+  "planner_default_choice": {
+    "planner_default_all_configs": "exact: scan + sort (no ANN index)",
+    "steered_hnsw_all_configs": "HNSW index scan",
+    "planner_default_active_only": "exact: scan + sort (no ANN index)",
+    "steered_hnsw_active_only": "HNSW index scan"
+  }
+}

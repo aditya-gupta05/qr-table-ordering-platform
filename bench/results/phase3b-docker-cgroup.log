@@ -1,0 +1,45 @@
+== C: open loop 200/s for 20.0s ==
+   C200: n=4000 err=0 p50=4.10 p95=6.77 p99=23.46 max=110.8 ms
+   errors={'http_errors': 0, 'lost': 0, 'late_gt_2s': 0} completed/s=200.0
+cleanup: select count(*) from orders where notes='bench-phase3' -> 0
+
+# Phase 3 latency benchmark: summary
+
+Run: 2026-10-11 02:59:07 UTC on , 0 GiB RAM; Docker VM: .
+All times in milliseconds. e2e = kitchen frame received minus (intended) POST send time, same host clock. Percentiles are nearest-rank over every order (no outlier trimming). `errors` = HTTP failures + frames never received; `late` = frames that took more than 2 s (still included in the percentiles).
+
+## End-to-end: diner tap to kitchen receives (last client of the fan-out)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| C open-loop 200/s | 4000 | 0 | 4.98 | 4.10 | 5.83 | 6.77 | 23.46 | 110.8 | 1.89 |
+
+## POST round trip (what the diner's request takes)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| C open-loop 200/s | 4000 | 0 | 4.93 | 4.10 | 5.68 | 6.68 | 24.35 | 113.0 | 1.85 |
+
+## Publish to receive (envelope published_at_us to client frame; needs host/VM clocks to agree)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| C open-loop 200/s | 4000 | 0 | 0.80 | 0.71 | 1.02 | 1.18 | 2.11 | 25.50 | 0.31 |
+
+## Open-loop details
+
+| rate | completions/s | generator lag p99 (ms) | bench CPU | api CPU max/mean | realtime CPU max | redis CPU max | postgres CPU max |
+|---|---|---|---|---|---|---|---|
+| 200/s | 200.0 | 2.50 | 20% | - / - | - | - | - |
+
+
+## Server-side histograms (Prometheus, same window; bucket-interpolated quantiles)
+
+| Scenario | metric | count | mean | p50 | p95 | p99 |
+|---|---|---|---|---|---|---|
+| C200 | order_create_seconds | 4020 | 1.66 | 1.54 | 2.56 | 10.18 |
+| C200 | order_event_publish_seconds | 4020 | 0.15 | 0.11 | 0.25 | 1.04 |
+| C200 | realtime_fanout_seconds | 4020 | 0.02 | 0.05 | 0.10 | 0.10 |
+| C200 | realtime_publish_to_send_seconds | 40200 | 0.22 | 0.18 | 0.40 | 0.80 |
+| C200 | http_post_orders_seconds | 4020 | 3.18 | 2.36 | 4.93 | 18.63 |
+

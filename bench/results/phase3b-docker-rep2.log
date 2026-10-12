@@ -1,0 +1,57 @@
+== C: open loop 100/s for 20.0s ==
+   C100: n=2000 err=0 p50=6.74 p95=9.50 p99=31.07 max=123.5 ms
+   errors={'http_errors': 0, 'lost': 0, 'late_gt_2s': 0} completed/s=100.0
+== C: open loop 200/s for 20.0s ==
+   C200: n=4000 err=0 p50=4.40 p95=16.16 p99=235.0 max=416.9 ms
+   errors={'http_errors': 0, 'lost': 0, 'late_gt_2s': 0} completed/s=200.0
+cleanup: select count(*) from orders where notes='bench-phase3' -> 0
+
+# Phase 3 latency benchmark: summary
+
+Run: 2026-10-11 02:58:00 UTC on , 0 GiB RAM; Docker VM: .
+All times in milliseconds. e2e = kitchen frame received minus (intended) POST send time, same host clock. Percentiles are nearest-rank over every order (no outlier trimming). `errors` = HTTP failures + frames never received; `late` = frames that took more than 2 s (still included in the percentiles).
+
+## End-to-end: diner tap to kitchen receives (last client of the fan-out)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| C open-loop 100/s | 2000 | 0 | 7.50 | 6.74 | 8.19 | 9.50 | 31.07 | 123.5 | 3.49 |
+| C open-loop 200/s | 4000 | 0 | 10.31 | 4.40 | 6.95 | 16.16 | 235.0 | 416.9 | 1.93 |
+
+## POST round trip (what the diner's request takes)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| C open-loop 100/s | 2000 | 0 | 7.50 | 6.71 | 8.16 | 9.42 | 30.69 | 129.7 | 3.44 |
+| C open-loop 200/s | 4000 | 0 | 10.56 | 4.40 | 7.07 | 17.05 | 245.9 | 421.0 | 1.90 |
+
+## Publish to receive (envelope published_at_us to client frame; needs host/VM clocks to agree)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| C open-loop 100/s | 2000 | 0 | 0.94 | 0.85 | 1.16 | 1.39 | 2.87 | 15.56 | 0.39 |
+| C open-loop 200/s | 4000 | 0 | 1.13 | 0.80 | 1.44 | 1.81 | 7.37 | 113.0 | 0.31 |
+
+## Open-loop details
+
+| rate | completions/s | generator lag p99 (ms) | bench CPU | api CPU max/mean | realtime CPU max | redis CPU max | postgres CPU max |
+|---|---|---|---|---|---|---|---|
+| 100/s | 100.0 | 3.11 | 14% | - / - | - | - | - |
+| 200/s | 200.0 | 20.39 | 25% | - / - | - | - | - |
+
+
+## Server-side histograms (Prometheus, same window; bucket-interpolated quantiles)
+
+| Scenario | metric | count | mean | p50 | p95 | p99 |
+|---|---|---|---|---|---|---|
+| C100 | order_create_seconds | 2020 | 2.44 | 2.18 | 3.93 | 13.50 |
+| C100 | order_event_publish_seconds | 2020 | 0.20 | 0.18 | 0.38 | 0.97 |
+| C100 | realtime_fanout_seconds | 2020 | 0.03 | 0.05 | 0.10 | 0.10 |
+| C100 | realtime_publish_to_send_seconds | 20200 | 0.33 | 0.34 | 0.61 | 1.31 |
+| C100 | http_post_orders_seconds | 2020 | 4.56 | 3.94 | 7.09 | 26.18 |
+| C200 | order_create_seconds | 4020 | 2.83 | 1.58 | 5.83 | 42.27 |
+| C200 | order_event_publish_seconds | 4020 | 0.30 | 0.14 | 0.61 | 5.75 |
+| C200 | realtime_fanout_seconds | 4020 | 0.02 | 0.05 | 0.10 | 0.10 |
+| C200 | realtime_publish_to_send_seconds | 40200 | 0.28 | 0.19 | 0.48 | 1.76 |
+| C200 | http_post_orders_seconds | 4020 | 5.24 | 2.97 | 11.53 | 83.13 |
+

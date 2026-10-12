@@ -1,4 +1,4 @@
-.PHONY: up down logs migrate seed ingest menu-pdf test lint fmt
+.PHONY: up down logs migrate seed ingest menu-pdf test test-llm lint fmt
 
 up:
 	docker compose up -d --build
@@ -26,6 +26,10 @@ menu-pdf:
 test:
 	cd api && uv run pytest
 	cd realtime && go test -race ./...
+
+# Opt-in: calls the real DeepSeek API (2 tiny requests, key from DEEPSEEK_API_KEY or .env).
+test-llm:
+	cd api && RUN_LLM_TESTS=1 uv run pytest tests/test_llm_live.py -s
 
 lint:
 	cd api && uv run ruff check . ../eval && uv run ruff format --check . ../eval

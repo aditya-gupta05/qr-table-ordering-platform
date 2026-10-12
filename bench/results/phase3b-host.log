@@ -1,0 +1,106 @@
+== A: sequential baseline ==
+   A: n=1000 err=0 p50=4.01 p95=6.57 p99=9.94 max=56.47 ms
+== C: open loop 50/s for 20.0s ==
+   C50: n=1000 err=0 p50=10.98 p95=15.33 p99=21.33 max=84.28 ms
+   errors={'http_errors': 0, 'lost': 0, 'late_gt_2s': 0} completed/s=50.0
+== C: open loop 100/s for 20.0s ==
+   C100: n=2000 err=0 p50=7.34 p95=11.13 p99=26.55 max=122.1 ms
+   errors={'http_errors': 0, 'lost': 0, 'late_gt_2s': 0} completed/s=100.0
+== C: open loop 200/s for 20.0s ==
+   C200: n=4000 err=0 p50=5.52 p95=8.45 p99=17.49 max=70.88 ms
+   errors={'http_errors': 0, 'lost': 0, 'late_gt_2s': 0} completed/s=200.0
+cleanup: select count(*) from orders where notes='bench-phase3' -> 0
+
+# Phase 3 latency benchmark: summary
+
+Run: 2026-10-10 19:50:57 PDT on Apple M2 Pro, 16 GiB RAM; Docker VM: 10 CPUs, 8217382912 bytes, Docker Desktop, 29.2.0.
+All times in milliseconds. e2e = kitchen frame received minus (intended) POST send time, same host clock. Percentiles are nearest-rank over every order (no outlier trimming). `errors` = HTTP failures + frames never received; `late` = frames that took more than 2 s (still included in the percentiles).
+
+## End-to-end: diner tap to kitchen receives (last client of the fan-out)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| A sequential, 1 client | 1000 | 0 | 4.40 | 4.01 | 5.63 | 6.57 | 9.94 | 56.47 | 2.76 |
+| C open-loop 50/s | 1000 | 0 | 11.45 | 10.98 | 13.81 | 15.33 | 21.33 | 84.28 | 5.75 |
+| C open-loop 100/s | 2000 | 0 | 8.20 | 7.34 | 9.39 | 11.13 | 26.55 | 122.1 | 4.72 |
+| C open-loop 200/s | 4000 | 0 | 6.04 | 5.52 | 7.51 | 8.45 | 17.49 | 70.88 | 3.26 |
+
+## POST round trip (what the diner's request takes)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| A sequential, 1 client | 1000 | 0 | 4.90 | 4.54 | 6.14 | 7.45 | 10.96 | 57.91 | 3.14 |
+| C open-loop 50/s | 1000 | 0 | 11.49 | 10.91 | 14.02 | 15.69 | 21.72 | 85.28 | 6.19 |
+| C open-loop 100/s | 2000 | 0 | 8.34 | 7.47 | 9.59 | 11.16 | 27.12 | 124.2 | 4.54 |
+| C open-loop 200/s | 4000 | 0 | 6.08 | 5.53 | 7.65 | 8.71 | 18.09 | 72.28 | 3.33 |
+
+## Publish to receive (envelope published_at_us to client frame; needs host/VM clocks to agree)
+
+| Scenario | n | errors | mean | p50 | p90 | p95 | p99 | max | min |
+|---|---|---|---|---|---|---|---|---|---|
+| A sequential, 1 client | 1000 | 0 | 1.35 | 1.20 | 1.90 | 2.13 | 2.94 | 5.91 | 0.89 |
+| C open-loop 50/s | 1000 | 0 | 3.87 | 3.70 | 4.99 | 5.75 | 7.61 | 12.10 | 2.05 |
+| C open-loop 100/s | 2000 | 0 | 2.92 | 2.78 | 3.79 | 4.35 | 6.57 | 22.16 | 1.43 |
+| C open-loop 200/s | 4000 | 0 | 1.93 | 1.73 | 2.85 | 3.19 | 4.06 | 8.02 | 0.85 |
+
+## Open-loop details
+
+| rate | completions/s | generator lag p99 (ms) | bench CPU | api CPU max/mean | realtime CPU max | redis CPU max | postgres CPU max |
+|---|---|---|---|---|---|---|---|
+| 50/s | 50.0 | 2.74 | 19% | - / - | - | - | - |
+| 100/s | 100.0 | 2.96 | 28% | - / - | - | - | - |
+| 200/s | 200.0 | 2.26 | 33% | - / - | - | - | - |
+
+
+## Server-side histograms (Prometheus, same window; bucket-interpolated quantiles)
+
+| Scenario | metric | count | mean | p50 | p95 | p99 |
+|---|---|---|---|---|---|---|
+| A | order_create_seconds | 1050 | 1.78 | 1.61 | 2.93 | 6.38 |
+| A | order_event_publish_seconds | 1050 | 0.14 | 0.16 | 0.25 | 0.53 |
+| A | realtime_fanout_seconds | 1050 | 0.02 | 0.05 | 0.10 | 0.10 |
+| A | realtime_publish_to_send_seconds | 1050 | 0.23 | 0.19 | 0.46 | 0.86 |
+| A | http_post_orders_seconds | 1050 | 3.41 | 3.64 | 5.53 | 11.50 |
+| C50 | order_create_seconds | 1020 | 3.42 | 3.44 | 4.95 | 9.57 |
+| C50 | order_event_publish_seconds | 1020 | 0.26 | 0.22 | 0.49 | 0.98 |
+| C50 | realtime_fanout_seconds | 1020 | 0.05 | 0.05 | 0.10 | 0.16 |
+| C50 | realtime_publish_to_send_seconds | 10200 | 0.45 | 0.40 | 0.91 | 1.71 |
+| C50 | http_post_orders_seconds | 1020 | 6.22 | 6.06 | 9.26 | 14.94 |
+| C100 | order_create_seconds | 2020 | 2.43 | 2.25 | 3.71 | 9.57 |
+| C100 | order_event_publish_seconds | 2020 | 0.19 | 0.18 | 0.36 | 1.26 |
+| C100 | realtime_fanout_seconds | 2020 | 0.03 | 0.05 | 0.10 | 0.10 |
+| C100 | realtime_publish_to_send_seconds | 20200 | 0.30 | 0.33 | 0.54 | 0.95 |
+| C100 | http_post_orders_seconds | 2020 | 4.57 | 3.89 | 6.66 | 17.57 |
+| C200 | order_create_seconds | 4020 | 1.84 | 1.60 | 2.91 | 7.63 |
+| C200 | order_event_publish_seconds | 4020 | 0.17 | 0.17 | 0.42 | 0.97 |
+| C200 | realtime_fanout_seconds | 4020 | 0.02 | 0.05 | 0.10 | 0.10 |
+| C200 | realtime_publish_to_send_seconds | 40200 | 0.24 | 0.19 | 0.47 | 0.87 |
+| C200 | http_post_orders_seconds | 4020 | 3.58 | 3.78 | 5.73 | 14.74 |
+
+## Clock check (scenario A)
+
+published_at minus send: p50 2.75 ms, min 1.83 ms; response minus published_at: p50 1.82 ms, min 1.17 ms; orders where either was negative: 0. A negative value would mean the Docker VM clock disagrees with the host clock.
+
+## Latency budget (scenario A, means)
+
+| Stage | mean ms |
+|---|---|
+| Client send to API `published_at`, excluding DB: network ingress (host to Docker port-forward), uvicorn parse, routing, post-commit reload, envelope build (= client mean of published_at minus t_send, minus the DB row below) | 1.27 |
+| API pricing queries + INSERTs + COMMIT (`order_create_seconds`, Prometheus) | 1.78 |
+| `published_at` to Go frame write (`realtime_publish_to_send_seconds`, Prometheus): Redis PUBLISH + hop + Go fan-out + queue + writer | 0.23 |
+| Go WS write to client read (client pub_to_recv minus publish_to_send) | 1.13 |
+| **Measured end-to-end (client, mean)** | 4.40 |
+
+Reference points, not additive: 
+- `order_event_publish_seconds` (API's Redis PUBLISH call): 0.14 ms
+- `realtime_fanout_seconds` (Go lookup + enqueue): 0.02 ms
+- Redis hop to Go subscriber (publish_to_send minus fanout, includes the PUBLISH): 0.21 ms
+- API HTTP handler total (`http_request_duration_seconds`): 3.41 ms
+- Client POST round trip: 4.90 ms; port-forward + client overhead = RTT minus handler = 1.49 ms (both directions)
+
+Rows 1-4 sum to the measured end-to-end by construction (`published_at` is the pivot). Row 1 is a residual and is only meaningful if the host and Docker VM clocks agree; see the clock check. Server means are exact (Prometheus `_sum/_count` deltas), not bucket-interpolated. The HTTP handler total includes response serialisation, which happens after the publish and is not on the notification path.
+
+
+real	1m36.554s
+user	0m15.494s
+sys	0m4.243s

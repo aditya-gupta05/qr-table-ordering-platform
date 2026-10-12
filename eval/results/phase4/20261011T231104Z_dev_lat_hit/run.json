@@ -1,0 +1,136 @@
+{
+  "run_id": "20261011T231104Z_dev_lat_hit",
+  "started_utc": "2026-10-11T23:11:10.487079+00:00",
+  "elapsed_s": 6.3,
+  "argv": [
+    "../eval/retrieval/run_retrieval_eval.py",
+    "--split",
+    "dev",
+    "--warmup",
+    "3",
+    "--repeats",
+    "5",
+    "--tag",
+    "lat_hit",
+    "--embed-cache",
+    "hit",
+    "--configs",
+    "A.vec:chunk=fixed_128_o30,mode=vector",
+    "A.hyb:chunk=fixed_128_o30",
+    "B.vec:chunk=recursive_256_o15,mode=vector",
+    "B.hyb:chunk=recursive_256_o15"
+  ],
+  "split": "dev",
+  "n_queries": 39,
+  "dataset": {
+    "path": "eval/datasets/retrieval_v1.jsonl",
+    "sha256": "e10b118f2b4e01adf6e6ef28e30e30f2cb1dda454858c483ff7b291e4546aa7c",
+    "frozen": true,
+    "test_sha256": "233cb205a52b7753b0ddfcb238f1fd6a83e7d96dadc4a6b43c42003332129f2d"
+  },
+  "git": {
+    "sha": "a9119832a0c4ffa6d812ffaefc61d577c3fad194",
+    "dirty": true
+  },
+  "corpus_sha256": "3be402a472c69e9d512ea99fc7bf510eaa5c7a2487eb8559541c81bc5a04edc8",
+  "corpus_docs": {
+    "about-sourcing": "97e170cf7ea7",
+    "allergen-kitchen-practices": "8ec09530a8f9",
+    "dish-guide": "31205c72237b",
+    "faq": "e023a5040806",
+    "menu-pdf": "f60402b4614e",
+    "policies": "f2595a8ff21c"
+  },
+  "models": {
+    "embedders": [
+      "BAAI/bge-small-en-v1.5"
+    ],
+    "reranker": "Xenova/ms-marco-MiniLM-L-6-v2",
+    "onnx_threads": 2
+  },
+  "versions": {
+    "fastembed": "0.9.0",
+    "onnxruntime": "1.31.0",
+    "tokenizers": "0.23.3",
+    "numpy": "2.5.4",
+    "SQLAlchemy": "2.1.4",
+    "asyncpg": "0.32.0",
+    "pgvector": "0.5.1"
+  },
+  "postgres": "PostgreSQL 16.15 (Debian 16.15-1.pgdg12+2) on aarch64-unknown-linux-gnu",
+  "pgvector": "0.8.7",
+  "host": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.10",
+    "cpus": 10
+  },
+  "row_scope": "per row",
+  "filters": "per row",
+  "latency": {
+    "warmup_calls": 3,
+    "repeats_per_query": 5,
+    "embedding_cache": "shared, primed (hit path)"
+  },
+  "configs": {
+    "A.vec": {
+      "mode": "vector",
+      "k": 10,
+      "candidate_k": 50,
+      "rrf_k": 60,
+      "rerank": false,
+      "rerank_top_n": 20,
+      "embed_model": "BAAI/bge-small-en-v1.5",
+      "query_prefix": null,
+      "chunk_config": "fixed_128_o30",
+      "ef_search": 100,
+      "iterative_scan": "relaxed_order",
+      "vector_index": "hnsw",
+      "fts_operator": "or"
+    },
+    "A.hyb": {
+      "mode": "hybrid",
+      "k": 10,
+      "candidate_k": 50,
+      "rrf_k": 60,
+      "rerank": false,
+      "rerank_top_n": 20,
+      "embed_model": "BAAI/bge-small-en-v1.5",
+      "query_prefix": null,
+      "chunk_config": "fixed_128_o30",
+      "ef_search": 100,
+      "iterative_scan": "relaxed_order",
+      "vector_index": "hnsw",
+      "fts_operator": "or"
+    },
+    "B.vec": {
+      "mode": "vector",
+      "k": 10,
+      "candidate_k": 50,
+      "rrf_k": 60,
+      "rerank": false,
+      "rerank_top_n": 20,
+      "embed_model": "BAAI/bge-small-en-v1.5",
+      "query_prefix": null,
+      "chunk_config": "recursive_256_o15",
+      "ef_search": 100,
+      "iterative_scan": "relaxed_order",
+      "vector_index": "hnsw",
+      "fts_operator": "or"
+    },
+    "B.hyb": {
+      "mode": "hybrid",
+      "k": 10,
+      "candidate_k": 50,
+      "rrf_k": 60,
+      "rerank": false,
+      "rerank_top_n": 20,
+      "embed_model": "BAAI/bge-small-en-v1.5",
+      "query_prefix": null,
+      "chunk_config": "recursive_256_o15",
+      "ef_search": 100,
+      "iterative_scan": "relaxed_order",
+      "vector_index": "hnsw",
+      "fts_operator": "or"
+    }
+  }
+}

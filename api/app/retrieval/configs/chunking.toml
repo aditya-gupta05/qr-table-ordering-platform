@@ -1,0 +1,99 @@
+# Chunking grid for Phase 4 ablations. Ingest one with `--config NAME` or all with `--all-configs`.
+# Token counts use the bge WordPiece tokenizer (arctic-xs shares the BERT-uncased vocabulary).
+# overlap_tokens: fixed_token / recursive_md = tokens; sentence = budget in whole sentences' tokens.
+
+default = "fixed_128_o30"
+
+[[config]]
+name = "fixed_128_o0"
+strategy = "fixed_token"
+max_tokens = 128
+overlap_tokens = 0
+
+[[config]]
+name = "fixed_128_o15"
+strategy = "fixed_token"
+max_tokens = 128
+overlap_tokens = 19
+
+[[config]]
+name = "fixed_128_o30"
+strategy = "fixed_token"
+max_tokens = 128
+overlap_tokens = 38
+
+[[config]]
+name = "fixed_256_o0"
+strategy = "fixed_token"
+max_tokens = 256
+overlap_tokens = 0
+
+[[config]]
+name = "fixed_256_o15"
+strategy = "fixed_token"
+max_tokens = 256
+overlap_tokens = 38
+
+[[config]]
+name = "fixed_256_o30"
+strategy = "fixed_token"
+max_tokens = 256
+overlap_tokens = 77
+
+[[config]]
+name = "fixed_512_o0"
+strategy = "fixed_token"
+max_tokens = 512
+overlap_tokens = 0
+
+[[config]]
+name = "fixed_512_o15"
+strategy = "fixed_token"
+max_tokens = 512
+overlap_tokens = 77
+
+[[config]]
+name = "fixed_512_o30"
+strategy = "fixed_token"
+max_tokens = 512
+overlap_tokens = 154
+
+[[config]]
+name = "recursive_128_o15"
+strategy = "recursive_md"
+max_tokens = 128
+overlap_tokens = 19
+
+[[config]]
+name = "recursive_256_o15"
+strategy = "recursive_md"
+max_tokens = 256
+overlap_tokens = 38
+
+[[config]]
+name = "recursive_512_o15"
+strategy = "recursive_md"
+max_tokens = 512
+overlap_tokens = 77
+
+[[config]]
+name = "sentence_256_o15"
+strategy = "sentence"
+max_tokens = 256
+overlap_tokens = 38
+
+# --- heading-prepend variants (WP6 ablation only; not part of the 13-config grid) ---
+# The heading path ("A > B") is added to the text that is embedded; the stored chunk text is unchanged.
+[[config]]
+name = "fixed_128_o30_h"
+strategy = "fixed_token"
+max_tokens = 128
+overlap_tokens = 38
+prepend_headings = true
+
+[[config]]
+name = "recursive_256_o15_h"
+strategy = "recursive_md"
+max_tokens = 256
+overlap_tokens = 38
+prepend_headings = true

@@ -47,8 +47,19 @@ Published by the API (`api/app/events.py`) to Redis pub/sub; consumed by the Go 
 
 `order.status` is one of `received, preparing, ready, served, cancelled`. Money is integer cents. Timestamps are ISO-8601 UTC.
 
+## Channel `staff.requests` (Phase 5)
+Waiter requests, published by `api/app/waiter.py` through the same `events.publish_envelope` helper (same envelope fields, same publish-after-commit and at-most-once rules, same `order_events_publish_failures_total{channel}` metric). Full schema and examples: `docs/contracts/chat.md` ("Event: staff.requests").
+
+| `type` | Published when |
+|---|---|
+| `waiter.requested` | a new request was created (`POST /api/waiter-requests` or an accepted `call_waiter` chat action); not when an existing open one is returned |
+| `waiter.updated` | `PATCH /api/waiter-requests/{id}` changed the status |
+
+The payload key is `waiter_request` (not `order`); its shape is `WaiterRequest` from the chat contract. Clients recover with `GET /api/waiter-requests?status=open`.
+
 ## Go consumer notes (Phase 2)
 - Route `orders.new` to kitchen clients; route `orders.status` to kitchen clients and to diner clients watching `order.public_id`.
+- `staff.requests` envelopes have no `order.public_id`, so the hub routes them to kitchen clients only (never to `/ws/orders/{id}`); the subscription list is in `realtime/cmd/realtime/main.go`. Tests: `TestWaiterEnvelopeKitchenOnly`, `TestSubscriberWaiterEnvelopeKitchenOnly`.
 - Never use `order.id` to authorise diners; diners are identified by `public_id`.
 
 # WebSocket API (Go realtime service, port 8080; Vite proxies `/ws` to it)
@@ -58,7 +69,7 @@ Implemented in `realtime/internal/hub` and `realtime/internal/server`.
 ## Endpoints
 | Path | Receives |
 |---|---|
-| `GET /ws/kitchen` | Every `orders.new` and `orders.status` envelope |
+| `GET /ws/kitchen` | Every `orders.new`, `orders.status` and `staff.requests` envelope |
 | `GET /ws/orders/{public_id}` | Only envelopes whose `order.public_id` equals `{public_id}` (case-insensitive) |
 
 - `{public_id}` must be a UUID; anything else gets **HTTP 400 before the upgrade**.

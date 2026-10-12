@@ -45,13 +45,16 @@ Fill these in as each service is scaffolded; keep them accurate.
 - Dashboards: Grafana :3000 provisions `ops/grafana/dashboards/*.json` (`overview.json`, `realtime-latency.json`).
 - Ingest (Phase 4): `make ingest [ARGS="--all-configs --model snowflake/snowflake-arctic-embed-xs"]` (= `cd api && uv run python -m app.retrieval.ingest`; docs + menu-item embeddings, idempotent, models cached in `~/.cache/fastembed`; flags: `--config NAME|--all-configs`, `--model M` (repeatable), `--docs|--menu`, `--prune`). Chunk grid: `api/app/retrieval/configs/chunking.toml`
 - Menu PDF: `make menu-pdf` (reportlab, byte-stable) -> `api/corpus/menu.pdf`. Real-model test: `RUN_MODEL_TESTS=1 uv run pytest tests/test_ingest.py`
-- Event contract: `docs/contracts/events.md`
+- Chat analytics: `curl 'localhost:8000/api/analytics/chat?since=2026-10-01T00:00:00Z'` (all-time if no params); chat/waiter contract: `docs/contracts/chat.md`; dashboard `ops/grafana/dashboards/chatbot.json`
+- Event contract: `docs/contracts/events.md` · Chat API contract: `docs/contracts/chat.md`
+- LLM client tests (offline): `cd api && uv run pytest tests/test_llm_client.py` · live DeepSeek check (opt-in, ~2 tiny calls): `make test-llm` (= `RUN_LLM_TESTS=1 uv run pytest tests/test_llm_live.py -s`)
 - Search endpoint (debug): `GET /api/search?q=...&mode=hybrid|vector|fts&k=5&rerank=true&exclude_allergens=peanut&dietary=vegan&scope=menu,docs&config=<chunk config>`; `RETRIEVAL_WARMUP=true` preloads embedder + reranker per worker
 - Retrieval eval (from `api/`): `uv run python ../eval/retrieval/run_retrieval_eval.py --validate [--review]` (labels check; `--review` rewrites `eval/datasets/REVIEW.md`) · `... --split dev --configs default "rr:rerank=1"` (results in `eval/results/phase4/`) · `--freeze` locks the test split after user review; test runs refuse until frozen
 - Retrieval ingest: `make ingest ARGS="--config NAME|--all-configs [--model M] [--docs|--menu] [--prune]"` (= `cd api && uv run python -m app.retrieval.ingest ...`); chunk configs in `api/app/retrieval/configs/chunking.toml`
 - Retrieval eval (dev split; the test split is frozen, run it once): `cd api && uv run python ../eval/retrieval/run_retrieval_eval.py --validate` · `--split dev --configs "label:chunk=fixed_128_o30,mode=hybrid,fts=and,..."` (flags: `--no-filters`, `--ignore-row-scope`, `--embed-cache hit|miss`, `--threshold-from`) -> `eval/results/phase4/`
 - Retrieval tables/studies: `cd api && uv run python ../eval/retrieval/phase4_tables.py` (-> `ablation_summary.md`) · `../eval/retrieval/filter_study.py` · `../eval/retrieval/pdf_cleaning.py` · `uv run python ../bench/retrieval_index.py` (HNSW vs exact -> `bench/results/phase4-index.*`)
-- Smoke: `TODO` · LLM eval: `TODO`
+- Chat smoke eval: `cd api && uv run python ../eval/chat/run_chat_smoke.py --dry-run` (free harness check) or `--label <name>` (real DeepSeek; hard caps `--max-llm-calls 100 --max-cost-usd 0.25`; key from repo `.env`; output `eval/results/phase5/<run>/`; deletes its own DB rows)
+- Smoke: `TODO` · Full LLM eval: `TODO`
 
 ## Non-negotiable rules
 - **Publish after commit.** Never publish to Redis before the DB transaction commits.

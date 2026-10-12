@@ -8,6 +8,7 @@ from sqlalchemy import (
     Computed,
     DateTime,
     Enum,
+    Float,
     ForeignKey,
     Index,
     Integer,
@@ -199,3 +200,229 @@ class MenuItemEmbedding(Base):
     model: Mapped[str] = mapped_column(Text, primary_key=True)
     content_hash: Mapped[str] = mapped_column(Text)
     embedding = mapped_column(Vector(384))
+
+
+# --- Phase 5 chatbot (migration 0004). Timestamps are timestamptz. `turn_id` is a UUID minted per
+# diner message; chat_messages (user + assistant rows), llm_calls, tool_calls and chat_actions of
+# one turn all share it.
+
+
+class ChatSession(Base):
+    __tablename__ = "chat_sessions"
+    __table_args__ = (
+        CheckConstraint(
+            "outcome IN ('resolved', 'escalated', 'abandoned', 'no_question')",
+            name="ck_chat_sessions_outcome",
+        ),
+        Index("ix_chat_sessions_table_created", "table_id", "created_at"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()")
+    )
+    table_id: Mapped[int] = mapped_column(ForeignKey("dining_tables.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    last_activity_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    busy_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    prompt_version: Mapped[str | None] = mapped_column(Text)
+    config: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'"))
+    declared_allergens: Mapped[list[str]] = mapped_column(
+        ARRAY(Text), default=list, server_default=text("'{}'")
+    )
+    outcome: Mapped[str | None] = mapped_column(Text)
+    outcome_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    converted: Mapped[bool] = mapped_column(default=False, server_default=text("false"))
+    turn_count: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+
+
+class ChatMessage(Base):
+    __tablename__ = "chat_messages"
+    __table_args__ = (
+        UniqueConstraint("session_id", "client_message_id", name="uq_chat_messages_client_id"),
+        UniqueConstraint("session_id", "turn_index", "role", name="uq_chat_messages_turn_role"),
+        CheckConstraint("role IN ('user', 'assistant')", name="ck_chat_messages_role"),
+        Index("ix_chat_messages_turn_id", "turn_id"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    session_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("chat_sessions.id", ondelete="CASCADE")
+    )
+    turn_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    turn_index: Mapped[int] = mapped_column(Integer)
+    role: Mapped[str] = mapped_column(Text)
+    content: Mapped[str] = mapped_column(Text)  # PII-redacted; what the diner sees / sent
+    content_llm: Mapped[str | None] = mapped_column(Text)  # what was sent to the model
+    client_message_id: Mapped[str | None] = mapped_column(Text)
+    status: Mapped[str | None] = mapped_column(Text)  # respond() status for assistant rows
+    turn_outcome: Mapped[str | None] = mapped_column(Text)
+    citations: Mapped[list] = mapped_column(JSONB, server_default=text("'[]'"))
+    allergen_notice: Mapped[dict | None] = mapped_column(JSONB)
+    guardrails: Mapped[list] = mapped_column(JSONB, server_default=text("'[]'"))
+    feedback: Mapped[bool | None] = mapped_column()  # True = helpful
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+    request_id: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class LLMCall(Base):
+    """One row per LLM call. Never stores prompt or completion text (PII rule)."""
+
+    __tablename__ = "llm_calls"
+    __table_args__ = (
+        Index("ix_llm_calls_session_turn", "session_id", "turn_id"),
+        Index("ix_llm_calls_created_at", "created_at"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    session_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("chat_sessions.id", ondelete="CASCADE")
+    )
+    turn_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    call_index: Mapped[int] = mapped_column(SmallInteger)
+    attempt: Mapped[int] = mapped_column(SmallInteger, default=1, server_default="1")
+    model: Mapped[str] = mapped_column(Text)
+    thinking: Mapped[str] = mapped_column(Text, default="off", server_default="off")
+    temperature: Mapped[float | None] = mapped_column(Float)
+    prompt_version: Mapped[str | None] = mapped_column(Text)
+    prefix_sha256: Mapped[str | None] = mapped_column(Text)
+    prompt_tokens: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    cache_hit_tokens: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    cache_miss_tokens: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    completion_tokens: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    reasoning_tokens: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    cost_usd_micros: Mapped[int] = mapped_column(BigInteger, default=0, server_default="0")
+    price_period: Mapped[str | None] = mapped_column(Text)  # peak | offpeak
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+    finish_reason: Mapped[str | None] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(Text, default="ok", server_default="ok")
+    error_kind: Mapped[str | None] = mapped_column(Text)
+    http_status: Mapped[int | None] = mapped_column(Integer)
+    request_id: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class ToolCall(Base):
+    __tablename__ = "tool_calls"
+    __table_args__ = (Index("ix_tool_calls_session_turn", "session_id", "turn_id"),)
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    llm_call_id: Mapped[int | None] = mapped_column(
+        BigInteger, ForeignKey("llm_calls.id", ondelete="SET NULL")
+    )
+    session_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("chat_sessions.id", ondelete="CASCADE")
+    )
+    turn_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    name: Mapped[str] = mapped_column(Text)
+    arguments: Mapped[dict | None] = mapped_column(JSONB)  # redacted, size-capped
+    status: Mapped[str] = mapped_column(Text)  # ok | error | invalid_arguments | unknown_tool
+    widened: Mapped[bool] = mapped_column(default=False, server_default=text("false"))
+    result_ids: Mapped[list] = mapped_column(JSONB, server_default=text("'[]'"))
+    signals: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'"))
+    retrieval_timings: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'"))
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class ChatAction(Base):
+    __tablename__ = "chat_actions"
+    __table_args__ = (
+        CheckConstraint("kind IN ('add_to_cart', 'call_waiter')", name="ck_chat_actions_kind"),
+        CheckConstraint(
+            "status IN ('proposed', 'accepted', 'dismissed')", name="ck_chat_actions_status"
+        ),
+        Index("ix_chat_actions_session_turn", "session_id", "turn_id"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()")
+    )
+    session_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("chat_sessions.id", ondelete="CASCADE")
+    )
+    turn_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    kind: Mapped[str] = mapped_column(Text)
+    payload: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'"))
+    status: Mapped[str] = mapped_column(Text, default="proposed", server_default="proposed")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class WaiterRequest(Base):
+    __tablename__ = "waiter_requests"
+    __table_args__ = (
+        CheckConstraint("source IN ('chat', 'button')", name="ck_waiter_requests_source"),
+        CheckConstraint(
+            "reason IN ('allergy_or_dietary', 'question_not_answered', "
+            "'diner_asked_for_staff', 'other')",
+            name="ck_waiter_requests_reason",
+        ),
+        CheckConstraint(
+            "status IN ('open', 'acknowledged', 'closed')", name="ck_waiter_requests_status"
+        ),
+        # At most one open request per table; a second tap returns the existing one.
+        Index(
+            "uq_waiter_requests_one_open_per_table",
+            "table_id",
+            unique=True,
+            postgresql_where=text("status = 'open'"),
+        ),
+        Index("ix_waiter_requests_status_created", "status", "created_at"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    table_id: Mapped[int] = mapped_column(ForeignKey("dining_tables.id"))
+    session_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("chat_sessions.id", ondelete="SET NULL")
+    )
+    action_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("chat_actions.id", ondelete="SET NULL"), unique=True
+    )
+    source: Mapped[str] = mapped_column(Text)
+    reason: Mapped[str] = mapped_column(Text)
+    note: Mapped[str | None] = mapped_column(Text)
+    status: Mapped[str] = mapped_column(Text, default="open", server_default="open")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    acknowledged_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class AnswerCache(Base):
+    __tablename__ = "answer_cache"
+    __table_args__ = (
+        Index(
+            "ix_answer_cache_versions", "prompt_version", "model", "corpus_version", "menu_version"
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    question_norm: Mapped[str] = mapped_column(Text)
+    embedding = mapped_column(Vector(384))
+    message: Mapped[dict] = mapped_column(JSONB)
+    prompt_version: Mapped[str] = mapped_column(Text)
+    model: Mapped[str] = mapped_column(Text)
+    corpus_version: Mapped[str] = mapped_column(Text)
+    menu_version: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    hits: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+
+
+class AnswerCacheShadow(Base):
+    """Shadow mode: what the cache WOULD have served, paired with the fresh answer."""
+
+    __tablename__ = "answer_cache_shadow"
+
+    turn_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
+    cache_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("answer_cache.id", ondelete="CASCADE")
+    )
+    similarity: Mapped[float] = mapped_column(Float)
+    fresh_message_id: Mapped[int | None] = mapped_column(
+        BigInteger, ForeignKey("chat_messages.id", ondelete="SET NULL")
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

@@ -63,6 +63,8 @@ export default function OrderStatus() {
         void sync()
         return
       }
+      // staff.requests frames never reach diner sockets; ignore them defensively.
+      if (frame.type !== 'order.created' && frame.type !== 'order.status_changed') return
       if (frame.order.public_id !== publicId) return
       setOrder((prev) => (isNewer(frame.order, prev ?? undefined) ? frame.order : prev))
     },

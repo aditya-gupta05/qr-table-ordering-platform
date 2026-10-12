@@ -5,12 +5,13 @@ import structlog
 from fastapi import FastAPI
 
 from app import events
+from app.chat.service import close_chat_deps
 from app.config import get_settings
 from app.db import engine
 from app.logging import configure_logging
 from app.middleware import RequestContextMiddleware
 from app.retrieval.settings import get_retrieval_settings
-from app.routers import health, kitchen, menu, orders, search
+from app.routers import analytics, chat, health, kitchen, menu, orders, search, waiter
 
 configure_logging(get_settings().log_level)
 log = structlog.get_logger("app")
@@ -40,6 +41,7 @@ async def lifespan(_: FastAPI):
     yield
     if warm:
         warm.cancel()
+    await close_chat_deps()
     await events.close_redis()
     await engine.dispose()
     log.info("api_shutdown")
@@ -52,3 +54,6 @@ app.include_router(menu.router)
 app.include_router(orders.router)
 app.include_router(kitchen.router)
 app.include_router(search.router)
+app.include_router(waiter.router)
+app.include_router(analytics.router)
+app.include_router(chat.router)

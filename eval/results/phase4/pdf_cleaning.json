@@ -1,0 +1,71 @@
+{
+  "pages": 4,
+  "items_in_pdf": 42,
+  "size": {
+    "raw": {
+      "chars": 12945,
+      "tokens": 3927,
+      "prices_kept": 48
+    },
+    "cleaned": {
+      "chars": 10356,
+      "tokens": 2765,
+      "prices_kept": 48
+    },
+    "naive_cleaner_bug": {
+      "chars": 10488,
+      "tokens": 2797,
+      "prices_kept": 6
+    }
+  },
+  "completeness": {
+    "fixed_128_o0": {
+      "raw": {
+        "chunks": 31,
+        "complete_items": 31,
+        "rate": 0.738
+      },
+      "cleaned": {
+        "chunks": 22,
+        "complete_items": 35,
+        "rate": 0.833
+      }
+    },
+    "fixed_128_o30": {
+      "raw": {
+        "chunks": 44,
+        "complete_items": 36,
+        "rate": 0.857
+      },
+      "cleaned": {
+        "chunks": 31,
+        "complete_items": 42,
+        "rate": 1.0
+      }
+    },
+    "recursive_128_o15": {
+      "raw": {
+        "chunks": 43,
+        "complete_items": 33,
+        "rate": 0.786
+      },
+      "cleaned": {
+        "chunks": 30,
+        "complete_items": 42,
+        "rate": 1.0
+      }
+    },
+    "fixed_256_o0": {
+      "raw": {
+        "chunks": 16,
+        "complete_items": 35,
+        "rate": 0.833
+      },
+      "cleaned": {
+        "chunks": 11,
+        "complete_items": 39,
+        "rate": 0.929
+      }
+    }
+  }
+}

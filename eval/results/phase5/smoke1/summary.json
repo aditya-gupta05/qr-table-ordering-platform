@@ -1,0 +1,281 @@
+{
+  "run_id": "smoke1",
+  "dry_run": false,
+  "aborted": null,
+  "conversations": 21,
+  "turns": 23,
+  "turn_pass": {
+    "passed": 21,
+    "n": 23,
+    "rate": 0.913
+  },
+  "conversation_pass": {
+    "passed": 19,
+    "n": 21,
+    "rate": 0.9048
+  },
+  "pass_by_check": {
+    "action_conflict": {
+      "passed": 0,
+      "n": 1,
+      "rate": 0.0
+    },
+    "action_item": {
+      "passed": 1,
+      "n": 2,
+      "rate": 0.5
+    },
+    "action_item_from_turn": {
+      "passed": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "action_qty": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "actions": {
+      "passed": 3,
+      "n": 4,
+      "rate": 0.75
+    },
+    "allergen_notice": {
+      "passed": 4,
+      "n": 4,
+      "rate": 1.0
+    },
+    "must_cite_any_items": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "must_cite_items": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "must_cite_passage": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "must_not_cite_items": {
+      "passed": 4,
+      "n": 4,
+      "rate": 1.0
+    },
+    "no_error": {
+      "passed": 23,
+      "n": 23,
+      "rate": 1.0
+    },
+    "outcome_in": {
+      "passed": 4,
+      "n": 4,
+      "rate": 1.0
+    },
+    "status_in": {
+      "passed": 12,
+      "n": 13,
+      "rate": 0.9231
+    },
+    "text_must_match": {
+      "passed": 7,
+      "n": 9,
+      "rate": 0.7778
+    },
+    "text_must_not_match": {
+      "passed": 9,
+      "n": 9,
+      "rate": 1.0
+    },
+    "tool_args": {
+      "passed": 4,
+      "n": 4,
+      "rate": 1.0
+    },
+    "tools_any": {
+      "passed": 15,
+      "n": 15,
+      "rate": 1.0
+    },
+    "tools_none": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    }
+  },
+  "pass_by_category_conversations": {
+    "add_to_cart": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "aggregation": {
+      "passed": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "allergen": {
+      "passed": 2,
+      "n": 4,
+      "rate": 0.5
+    },
+    "diet_course": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "faq_policy": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "injection": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "menu": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "no_answer": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "off_topic": {
+      "passed": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "waiter": {
+      "passed": 1,
+      "n": 1,
+      "rate": 1.0
+    }
+  },
+  "pass_by_category_turns": {
+    "add_to_cart": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "aggregation": {
+      "passed": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "allergen": {
+      "passed": 3,
+      "n": 5,
+      "rate": 0.6
+    },
+    "diet_course": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "faq_policy": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "injection": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "menu": {
+      "passed": 3,
+      "n": 3,
+      "rate": 1.0
+    },
+    "no_answer": {
+      "passed": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "off_topic": {
+      "passed": 1,
+      "n": 1,
+      "rate": 1.0
+    },
+    "waiter": {
+      "passed": 1,
+      "n": 1,
+      "rate": 1.0
+    }
+  },
+  "tokens": {
+    "prompt": 145756,
+    "cache_hit": 111104,
+    "cache_miss": 34652,
+    "completion": 6626,
+    "llm_calls": 52
+  },
+  "cache_hit_ratio": {
+    "all_calls": 0.7623,
+    "calls_index_ge2_within_turn": 0.6965,
+    "turns_index_ge2_within_conversation": 0.6979
+  },
+  "cost_usd": {
+    "total": 0.009509,
+    "per_turn": 0.000413,
+    "per_conversation": 0.000453,
+    "per_llm_call": 0.000183,
+    "price_periods": [
+      "offpeak"
+    ]
+  },
+  "latency_ms": {
+    "turn_total": {
+      "p50": 2493.0,
+      "p95": 5456.5,
+      "mean": 3468.1
+    },
+    "llm": {
+      "p50": 2308.0,
+      "p95": 4083.3,
+      "mean": 3167.0
+    },
+    "retrieval_tools": {
+      "p50": 81.0,
+      "p95": 758.3,
+      "mean": 266.9
+    },
+    "other": {
+      "p50": 48.2,
+      "p95": 74.2,
+      "mean": 52.5
+    }
+  },
+  "llm_calls_per_turn": {
+    "mean": 2.26,
+    "max": 4
+  },
+  "turn_outcomes": {
+    "answered": 13,
+    "blocked": 2,
+    "clarify": 1,
+    "escalation_offered": 3,
+    "not_found": 2,
+    "off_topic": 2
+  },
+  "guardrail_triggers": {
+    "price_mismatch": 1
+  },
+  "smoke_deflection_D": {
+    "numerator": 13,
+    "denominator": 20,
+    "rate": 0.65,
+    "ci95": [
+      0.43285051021946463,
+      0.8188104521320554
+    ],
+    "label": "smoke, n=20 in-scope turns (21 conversations); no escalations by construction"
+  }
+}

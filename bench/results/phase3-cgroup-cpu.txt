@@ -1,0 +1,6 @@
+cgroup cpu.stat usage_usec before/after one C200 host-path run (wall 31.45 s incl. drain)
+api usage_usec 261697813	api usage_usec 275705503
+postgres usage_usec 777886214	postgres usage_usec 782753341
+realtime OCI runtime exec failed: exec failed: unable to start container process: exec: "sh": executable file not found in $PATH	realtime OCI runtime exec failed: exec failed: unable to start container process: exec: "sh": executable file not found in $PATH
+redis usage_usec 229619446	redis usage_usec 230010405
+api delta = 14007 ms CPU -> 0.445 cores avg over wall; postgres delta = 4867 ms; redis 390 ms

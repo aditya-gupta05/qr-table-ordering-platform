@@ -1,0 +1,55 @@
+{
+  "run_id": "smoke3",
+  "started_at": "2026-10-12T07:25:26.208482+00:00",
+  "finished_at": "2026-10-12T07:26:30.774089+00:00",
+  "git": {
+    "sha": "21751eb65994336f54f6ad6ab82b5befdd2bb338",
+    "dirty": true
+  },
+  "config_hash": "3673c4f03450",
+  "prompt_version": "d348f19f8b44",
+  "model": "deepseek-flash",
+  "thinking": "off",
+  "price_periods": [
+    "peak"
+  ],
+  "dry_run": false,
+  "caps": {
+    "max_llm_calls": 100,
+    "max_cost_usd": 0.25
+  },
+  "dataset": {
+    "path": "/Users/adityagupta/projects/qr-table-ordering-platform/eval/datasets/chat_smoke_v1.jsonl",
+    "sha256": "a6877d04d1c869b44b95f8e563ad03184c28173a4452b105a2a77e302ca448cd",
+    "conversations": 21
+  },
+  "settings": {
+    "model": "deepseek-flash",
+    "judge_model": "deepseek-v4-pro",
+    "thinking": "off",
+    "temperature": 0.0,
+    "max_tokens": 600,
+    "max_llm_calls": 4,
+    "turn_deadline_s": 30.0,
+    "connect_timeout_s": 5.0,
+    "read_timeout_s": 20.0,
+    "retries": 2,
+    "strict_tools": false,
+    "base_url": "https://api.deepseek.com",
+    "menu_context": "none",
+    "abstain_signal": true,
+    "abstain_threshold": -3.25,
+    "search_menu_k": 8,
+    "search_info_k": 10,
+    "info_context_tokens": 1024,
+    "history_turns": 6,
+    "answer_cache": "off",
+    "answer_cache_threshold": 0.95,
+    "session_turn_limit": 20,
+    "table_turns_per_hour": 60,
+    "daily_budget_usd": 1.0,
+    "debug": false
+  },
+  "cleanup": "dedicated table + sessions + waiter requests deleted after the run",
+  "aborted": null
+}

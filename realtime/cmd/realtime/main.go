@@ -70,7 +70,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	go h.RunSubscriber(ctx, subClient, "orders.new", "orders.status")
+	go h.RunSubscriber(ctx, subClient, "orders.new", "orders.status", "staff.requests")
 
 	go func() {
 		log.Info("realtime_startup", "port", cfg.Port, "version", version)

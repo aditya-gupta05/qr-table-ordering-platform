@@ -1,4 +1,4 @@
-"""Order event publisher. Contract: docs/contracts/events.md.
+"""Event publisher (orders, staff requests). Contract: docs/contracts/events.md.
 
 Callers must publish only AFTER the DB transaction has committed. Publishing is best-effort:
 failures are logged and counted but never propagate to the diner (the order is already durable
@@ -19,6 +19,7 @@ log = structlog.get_logger("events")
 
 CHANNEL_NEW = "orders.new"
 CHANNEL_STATUS = "orders.status"
+CHANNEL_STAFF = "staff.requests"
 
 _client: aioredis.Redis | None = None
 
@@ -37,19 +38,25 @@ async def close_redis() -> None:
         _client = None
 
 
-def build_envelope(event_type: str, order: OrderOut) -> dict:
+def build_envelope(event_type: str, payload_key: str, payload: dict) -> dict:
     return {
         "type": event_type,
         "version": 1,
         "request_id": structlog.contextvars.get_contextvars().get("request_id"),
         "published_at_us": time.time_ns() // 1000,
-        "order": order.model_dump(mode="json"),
+        payload_key: payload,
     }
 
 
-async def publish(channel: str, event_type: str, order: OrderOut) -> bool:
-    """Publish an event; returns True on success. Never raises."""
-    envelope = build_envelope(event_type, order)
+async def publish_envelope(
+    channel: str, event_type: str, payload_key: str, payload: dict, **log_fields
+) -> bool:
+    """Publish `{type, version, request_id, published_at_us, <payload_key>: payload}`.
+
+    Returns True on success. Never raises: failures are logged and counted. `log_fields` are
+    extra identifiers for the failure log line (never payload text).
+    """
+    envelope = build_envelope(event_type, payload_key, payload)
     start = time.perf_counter()
     try:
         await get_redis().publish(channel, json.dumps(envelope, separators=(",", ":")))
@@ -59,10 +66,17 @@ async def publish(channel: str, event_type: str, order: OrderOut) -> bool:
         log.error(
             "order_event_publish_failed",
             channel=channel,
-            order_id=order.id,
             event_type=event_type,
             error=str(exc),
+            **log_fields,
         )
         return False
     finally:
         EVENT_PUBLISH_SECONDS.observe(time.perf_counter() - start)
+
+
+async def publish(channel: str, event_type: str, order: OrderOut) -> bool:
+    """Order event (wire format unchanged: payload key `order`)."""
+    return await publish_envelope(
+        channel, event_type, "order", order.model_dump(mode="json"), order_id=order.id
+    )
