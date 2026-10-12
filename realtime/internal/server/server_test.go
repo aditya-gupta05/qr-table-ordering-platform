@@ -19,7 +19,7 @@ func (f fakePinger) Ping(context.Context) error { return f.err }
 
 func newTest(p Pinger) (http.Handler, *bytes.Buffer) {
 	buf := &bytes.Buffer{}
-	return New(slog.New(slog.NewJSONHandler(buf, nil)), p, "test"), buf
+	return New(Options{Log: slog.New(slog.NewJSONHandler(buf, nil)), Redis: p, Version: "test"}), buf
 }
 
 func TestHealthz(t *testing.T) {

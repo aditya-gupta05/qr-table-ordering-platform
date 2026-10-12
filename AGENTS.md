@@ -35,13 +35,23 @@ Fill these in as each service is scaffolded; keep them accurate.
 - Stack: `cp .env.example .env && make up` (= `docker compose up -d --build`) / `make down` / `make logs`
 - Make shortcuts: `make test` (api + realtime) · `make lint` (ruff, go vet, gofmt, web lint) · `make fmt`
 - API: `cd api && uv run pytest` (needs compose postgres/redis up; uses DB `qr_test`) · `uv run ruff check . && uv run ruff format --check .` · `uv run alembic upgrade head` (host, against `qr` on :55432) or `make migrate` (in container)
-- Realtime: `cd realtime && go test ./... && go vet ./...`
+- API process model / DB pool (env, per worker): `API_WORKERS` (default 2), `DB_POOL_SIZE` (10), `DB_MAX_OVERFLOW` (10); keep `API_WORKERS * (size + overflow)` well under Postgres `max_connections` (100). `/metrics` is multiprocess-aggregated when `PROMETHEUS_MULTIPROC_DIR` is set (container only). Before/after table: `python3 bench/phase3b_compare.py`
+- Realtime: `cd realtime && go test -race ./... && go vet ./...` (hub integration tests use Redis on :56379 and skip if unreachable)
 - Web: `cd web && npm run lint && npm run build` · dev server: `npm run dev` (:5173, proxies `/api` and `/ws`)
 - Seed: `make seed` (idempotent; or `cd api && uv run python -m seed.seed`)
 - QR PNGs: `cd api && uv run python ../scripts/gen_qr.py [--base-url URL]` -> `scripts/qr/`
 - Bench (POST /api/orders latency): `cd api && uv run python ../bench/order_post_latency.py --token <qr_token>` (output in `bench/results/`; delete rows with `notes='bench-phase1'` afterwards)
+- Latency bench (Phase 3, end-to-end diner tap to kitchen frame; stack up + seeded; about 6 min): `cd api && uv run python ../bench/e2e_latency.py --suite` (or `--scenario A|B|C|D`; `--diag` adds docker stats + pg_stat_activity to scenario C, `--a-think-ms N` idles between orders). Output: `bench/results/phase3-{A,B,C,D}.json` (raw samples) + `phase3-summary.md`. Rows are tagged `notes='bench-phase3'` and deleted at the end of the run. Run-to-run table: `python3 bench/phase3_repeats.py -run1 -run2 ""`. Open-loop GET floor: `cd api && uv run python ../bench/healthz_open_loop.py`. From inside the compose network (no Docker Desktop port forward): see the in-network command in `docs/reports/phase-3-latency-benchmark.md`.
+- Dashboards: Grafana :3000 provisions `ops/grafana/dashboards/*.json` (`overview.json`, `realtime-latency.json`).
+- Ingest (Phase 4): `make ingest [ARGS="--all-configs --model snowflake/snowflake-arctic-embed-xs"]` (= `cd api && uv run python -m app.retrieval.ingest`; docs + menu-item embeddings, idempotent, models cached in `~/.cache/fastembed`; flags: `--config NAME|--all-configs`, `--model M` (repeatable), `--docs|--menu`, `--prune`). Chunk grid: `api/app/retrieval/configs/chunking.toml`
+- Menu PDF: `make menu-pdf` (reportlab, byte-stable) -> `api/corpus/menu.pdf`. Real-model test: `RUN_MODEL_TESTS=1 uv run pytest tests/test_ingest.py`
 - Event contract: `docs/contracts/events.md`
-- Smoke: `TODO` · Eval: `TODO`
+- Search endpoint (debug): `GET /api/search?q=...&mode=hybrid|vector|fts&k=5&rerank=true&exclude_allergens=peanut&dietary=vegan&scope=menu,docs&config=<chunk config>`; `RETRIEVAL_WARMUP=true` preloads embedder + reranker per worker
+- Retrieval eval (from `api/`): `uv run python ../eval/retrieval/run_retrieval_eval.py --validate [--review]` (labels check; `--review` rewrites `eval/datasets/REVIEW.md`) · `... --split dev --configs default "rr:rerank=1"` (results in `eval/results/phase4/`) · `--freeze` locks the test split after user review; test runs refuse until frozen
+- Retrieval ingest: `make ingest ARGS="--config NAME|--all-configs [--model M] [--docs|--menu] [--prune]"` (= `cd api && uv run python -m app.retrieval.ingest ...`); chunk configs in `api/app/retrieval/configs/chunking.toml`
+- Retrieval eval (dev split; the test split is frozen, run it once): `cd api && uv run python ../eval/retrieval/run_retrieval_eval.py --validate` · `--split dev --configs "label:chunk=fixed_128_o30,mode=hybrid,fts=and,..."` (flags: `--no-filters`, `--ignore-row-scope`, `--embed-cache hit|miss`, `--threshold-from`) -> `eval/results/phase4/`
+- Retrieval tables/studies: `cd api && uv run python ../eval/retrieval/phase4_tables.py` (-> `ablation_summary.md`) · `../eval/retrieval/filter_study.py` · `../eval/retrieval/pdf_cleaning.py` · `uv run python ../bench/retrieval_index.py` (HNSW vs exact -> `bench/results/phase4-index.*`)
+- Smoke: `TODO` · LLM eval: `TODO`
 
 ## Non-negotiable rules
 - **Publish after commit.** Never publish to Redis before the DB transaction commits.

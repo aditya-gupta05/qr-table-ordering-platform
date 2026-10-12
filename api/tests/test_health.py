@@ -42,3 +42,11 @@ async def test_metrics_use_route_template(client):
     assert "http_request_duration_seconds_bucket" in body
     assert "nope-" not in body  # raw paths must not leak into label cardinality
     assert 'route="unmatched"' in body
+
+
+async def test_metrics_multiprocess_branch(client, monkeypatch, tmp_path):
+    # With the env var set /metrics aggregates mmap files on a fresh registry (empty dir here).
+    monkeypatch.setenv("PROMETHEUS_MULTIPROC_DIR", str(tmp_path))
+    r = await client.get("/metrics")
+    assert r.status_code == 200
+    assert r.headers["content-type"].startswith("text/plain")

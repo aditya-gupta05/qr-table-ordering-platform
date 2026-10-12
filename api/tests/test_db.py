@@ -51,3 +51,14 @@ async def test_seed_is_idempotent(migrated_test_db):
     assert first["menu_items"] >= 30
     assert sorted(tokens1) == sorted(tokens2)
     assert all(len(tok) == 22 for _, tok in tokens1)
+
+
+async def test_engine_pool_settings():
+    from app.config import get_settings
+    from app.db import engine
+
+    cfg = get_settings()
+    assert engine.pool.size() == cfg.db_pool_size
+    assert engine.pool._max_overflow == cfg.db_max_overflow
+    assert engine.pool._recycle == cfg.db_pool_recycle
+    assert engine.pool._pre_ping is False

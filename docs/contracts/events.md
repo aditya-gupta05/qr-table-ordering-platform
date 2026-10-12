@@ -50,3 +50,37 @@ Published by the API (`api/app/events.py`) to Redis pub/sub; consumed by the Go 
 ## Go consumer notes (Phase 2)
 - Route `orders.new` to kitchen clients; route `orders.status` to kitchen clients and to diner clients watching `order.public_id`.
 - Never use `order.id` to authorise diners; diners are identified by `public_id`.
+
+# WebSocket API (Go realtime service, port 8080; Vite proxies `/ws` to it)
+
+Implemented in `realtime/internal/hub` and `realtime/internal/server`.
+
+## Endpoints
+| Path | Receives |
+|---|---|
+| `GET /ws/kitchen` | Every `orders.new` and `orders.status` envelope |
+| `GET /ws/orders/{public_id}` | Only envelopes whose `order.public_id` equals `{public_id}` (case-insensitive) |
+
+- `{public_id}` must be a UUID; anything else gets **HTTP 400 before the upgrade**.
+- **Authorization trade-off:** possession of the order UUID is the capability for `/ws/orders/{public_id}`. There is no login. UUIDv4 (122 random bits) is unguessable, and the order feed contains no payment data, but anyone who obtains the URL can watch that order. `/ws/kitchen` is unauthenticated (staff auth is out of scope, same known gap as the kitchen REST endpoints).
+- **Origin check:** the `Origin` header must be same-host or match `ALLOWED_ORIGINS` (comma-separated host patterns; default `localhost:5173,127.0.0.1:5173`). Others get HTTP 403.
+
+## Frames (server to client)
+- Text frames. Order events are the Redis envelope bytes **passed through verbatim** (not re-encoded), so they are exactly the envelope above.
+- One control frame: `{"type":"resync","version":1}`, sent to all clients after the hub's Redis subscription recovers from a disconnect. Events may have been missed while it was down (pub/sub is at-most-once).
+- Clients send nothing. Any data frame from a client closes the connection (policy violation).
+
+## Close codes
+| Code | Meaning | Client action |
+|---|---|---|
+| 1001 going away | Server shutting down or ping timeout | Reconnect with backoff |
+| 1008 policy violation, reason `slow consumer` | Client's 64-frame queue overflowed, or it sent data | Reconnect, then resync via REST |
+
+## Keepalive
+Server pings every 20 s; a pong not received within 10 s closes the connection. Browsers answer pings automatically.
+
+## Client contract
+1. On `open` **and** on every `resync` frame: `GET /api/kitchen/orders` (kitchen) or `GET /api/orders/{public_id}` (diner) to load the snapshot, then apply events.
+2. Ignore any event whose `order.updated_at` is older than the state the client already holds for that order (dedupes the gap between snapshot and subscription, and out-of-order delivery).
+3. On close/error reconnect with exponential backoff and jitter: 0.5 s, doubling, capped at 10 s; reset after a successful open. After reconnecting, step 1 applies again.
+4. The envelope's `published_at_us` is for benchmarking; UIs should not rely on it.

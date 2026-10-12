@@ -2,15 +2,24 @@
 package server
 
 import (
+	"bufio"
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"errors"
 	"log/slog"
+	"net"
 	"net/http"
+	"regexp"
+	"strings"
 	"time"
+
+	"github.com/coder/websocket"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	"github.com/aditya-gupta05/qr-table-ordering-platform/realtime/internal/hub"
 )
 
 // Pinger is satisfied by *redis.Client; an interface keeps /readyz testable.
@@ -39,6 +48,18 @@ type statusRecorder struct {
 	status int
 }
 
+// Hijack lets websocket.Accept take over the connection through the logging wrapper.
+func (r *statusRecorder) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	h, ok := r.ResponseWriter.(http.Hijacker)
+	if !ok {
+		return nil, nil, errors.New("hijack not supported")
+	}
+	r.status = http.StatusSwitchingProtocols
+	return h.Hijack()
+}
+
+func (r *statusRecorder) Unwrap() http.ResponseWriter { return r.ResponseWriter }
+
 func (r *statusRecorder) WriteHeader(code int) {
 	r.status = code
 	r.ResponseWriter.WriteHeader(code)
@@ -65,8 +86,18 @@ func Middleware(log *slog.Logger, next http.Handler) http.Handler {
 	})
 }
 
-// New builds the HTTP handler. version is exposed via realtime_build_info.
-func New(log *slog.Logger, redis Pinger, version string) http.Handler {
+// Options configures New.
+type Options struct {
+	Log            *slog.Logger
+	Redis          Pinger
+	Version        string
+	Hub            *hub.Hub // nil disables the /ws routes
+	Registry       *prometheus.Registry
+	AllowedOrigins []string
+}
+
+// NewRegistry returns a registry with the Go/process collectors and realtime_build_info.
+func NewRegistry(version string) *prometheus.Registry {
 	reg := prometheus.NewRegistry()
 	reg.MustRegister(
 		prometheus.NewGoCollector(),
@@ -79,6 +110,18 @@ func New(log *slog.Logger, redis Pinger, version string) http.Handler {
 	})
 	buildInfo.Set(1)
 	reg.MustRegister(buildInfo)
+	return reg
+}
+
+var uuidRE = regexp.MustCompile(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)
+
+// New builds the HTTP handler.
+func New(o Options) http.Handler {
+	log, redis := o.Log, o.Redis
+	reg := o.Registry
+	if reg == nil {
+		reg = NewRegistry(o.Version)
+	}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
@@ -98,5 +141,26 @@ func New(log *slog.Logger, redis Pinger, version string) http.Handler {
 		_, _ = w.Write([]byte(`{"status":"ok","redis":"ok"}`))
 	})
 	mux.Handle("GET /metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{}))
+	if o.Hub != nil {
+		accept := &websocket.AcceptOptions{OriginPatterns: o.AllowedOrigins}
+		serve := func(w http.ResponseWriter, r *http.Request, topic string) {
+			conn, err := websocket.Accept(w, r, accept)
+			if err != nil {
+				return // Accept already wrote the error response (e.g. 403 bad origin)
+			}
+			o.Hub.Serve(r.Context(), conn, topic, r.RemoteAddr)
+		}
+		mux.HandleFunc("GET /ws/kitchen", func(w http.ResponseWriter, r *http.Request) {
+			serve(w, r, hub.TopicKitchen)
+		})
+		mux.HandleFunc("GET /ws/orders/{public_id}", func(w http.ResponseWriter, r *http.Request) {
+			id := r.PathValue("public_id")
+			if !uuidRE.MatchString(id) {
+				http.Error(w, "invalid order id", http.StatusBadRequest)
+				return
+			}
+			serve(w, r, hub.OrderTopic(strings.ToLower(id)))
+		})
+	}
 	return Middleware(log, mux)
 }

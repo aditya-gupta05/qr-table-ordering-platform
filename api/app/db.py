@@ -9,7 +9,15 @@ from app.config import get_settings
 
 
 def make_engine(url: str | None = None) -> AsyncEngine:
-    return create_async_engine(url or get_settings().database_url, pool_pre_ping=True)
+    cfg = get_settings()
+    # No pool_pre_ping: it costs a round trip on every checkout. Stale connections are bounded by
+    # pool_recycle instead; see the "workers and pool sizing" section of the phase 3 report.
+    return create_async_engine(
+        url or cfg.database_url,
+        pool_size=cfg.db_pool_size,
+        max_overflow=cfg.db_max_overflow,
+        pool_recycle=cfg.db_pool_recycle,
+    )
 
 
 engine = make_engine()

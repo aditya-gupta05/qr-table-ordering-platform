@@ -1,9 +1,11 @@
 import uuid
 from datetime import datetime
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     BigInteger,
     CheckConstraint,
+    Computed,
     DateTime,
     Enum,
     ForeignKey,
@@ -15,7 +17,7 @@ from sqlalchemy import (
     func,
     text,
 )
-from sqlalchemy.dialects.postgresql import ARRAY, UUID
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, TSVECTOR, UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from app.vocab import ORDER_STATUSES
@@ -116,3 +118,84 @@ class OrderItem(Base):
     notes: Mapped[str | None] = mapped_column(Text)
 
     order: Mapped[Order] = relationship(back_populates="items")
+
+
+# --- Phase 4 retrieval (migration 0003). menu_items.tsv exists in the DB (generated column) but
+# is deliberately not mapped here: the ORM would load it into every menu query for nothing.
+
+
+class Document(Base):
+    __tablename__ = "documents"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    slug: Mapped[str] = mapped_column(Text, unique=True)
+    source_type: Mapped[str] = mapped_column(Text)
+    title: Mapped[str] = mapped_column(Text)
+    uri: Mapped[str] = mapped_column(Text)
+    content: Mapped[str] = mapped_column(Text)  # cleaned text; chunk offsets index into this
+    content_hash: Mapped[str] = mapped_column(Text)
+    meta: Mapped[dict] = mapped_column("metadata", JSONB, server_default=text("'{}'"))
+    ingested_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class ChunkConfig(Base):
+    __tablename__ = "chunk_configs"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(Text, unique=True)
+    strategy: Mapped[str] = mapped_column(Text)
+    max_tokens: Mapped[int] = mapped_column(Integer)
+    overlap_tokens: Mapped[int] = mapped_column(Integer)
+    params: Mapped[dict] = mapped_column(JSONB, server_default=text("'{}'"))
+    tokenizer: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class Chunk(Base):
+    __tablename__ = "chunks"
+    __table_args__ = (
+        UniqueConstraint(
+            "document_id", "chunk_config_id", "chunk_index", name="uq_chunks_doc_config_idx"
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    document_id: Mapped[int] = mapped_column(ForeignKey("documents.id", ondelete="CASCADE"))
+    chunk_config_id: Mapped[int] = mapped_column(
+        ForeignKey("chunk_configs.id", ondelete="CASCADE"), index=True
+    )
+    chunk_index: Mapped[int] = mapped_column(Integer)
+    content: Mapped[str] = mapped_column(Text)
+    start_char: Mapped[int] = mapped_column(Integer)
+    end_char: Mapped[int] = mapped_column(Integer)
+    token_count: Mapped[int] = mapped_column(Integer)
+    section_path: Mapped[str] = mapped_column(Text, server_default="")
+    page: Mapped[int | None] = mapped_column(Integer)
+    menu_item_ids: Mapped[list[int]] = mapped_column(ARRAY(Integer), server_default=text("'{}'"))
+    meta: Mapped[dict] = mapped_column("metadata", JSONB, server_default=text("'{}'"))
+    tsv: Mapped[str] = mapped_column(TSVECTOR, Computed("to_tsvector('english', content)"))
+
+
+class ChunkEmbedding(Base):
+    __tablename__ = "chunk_embeddings"
+
+    chunk_id: Mapped[int] = mapped_column(
+        BigInteger, ForeignKey("chunks.id", ondelete="CASCADE"), primary_key=True
+    )
+    model: Mapped[str] = mapped_column(Text, primary_key=True)
+    embedding = mapped_column(Vector(384))
+    embed_text_hash: Mapped[str] = mapped_column(Text)
+
+
+class MenuItemEmbedding(Base):
+    __tablename__ = "menu_item_embeddings"
+
+    menu_item_id: Mapped[int] = mapped_column(
+        ForeignKey("menu_items.id", ondelete="CASCADE"), primary_key=True
+    )
+    model: Mapped[str] = mapped_column(Text, primary_key=True)
+    content_hash: Mapped[str] = mapped_column(Text)
+    embedding = mapped_column(Vector(384))

@@ -8,7 +8,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/t/:token" element={<Diner />} />
-        <Route path="/order/:id" element={<OrderStatus />} />
+        <Route path="/order/:publicId" element={<OrderStatus />} />
         <Route path="/kitchen" element={<Kitchen />} />
       </Routes>
     </BrowserRouter>

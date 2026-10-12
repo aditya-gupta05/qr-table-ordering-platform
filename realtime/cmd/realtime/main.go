@@ -14,6 +14,7 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	"github.com/aditya-gupta05/qr-table-ordering-platform/realtime/internal/config"
+	"github.com/aditya-gupta05/qr-table-ordering-platform/realtime/internal/hub"
 	"github.com/aditya-gupta05/qr-table-ordering-platform/realtime/internal/server"
 )
 
@@ -47,14 +48,29 @@ func main() {
 	rdb := redis.NewClient(opt)
 	defer rdb.Close()
 
+	// Dedicated client for the long-lived subscription; the name makes it identifiable in
+	// CLIENT LIST (used by the resync test).
+	subOpt := *opt
+	subOpt.ClientName = "realtime-subscriber"
+	subClient := redis.NewClient(&subOpt)
+	defer subClient.Close()
+
+	reg := server.NewRegistry(version)
+	h := hub.New(log, hub.NewMetrics(reg))
+
 	srv := &http.Server{
-		Addr:              ":" + cfg.Port,
-		Handler:           server.New(log, redisPinger{rdb}, version),
+		Addr: ":" + cfg.Port,
+		Handler: server.New(server.Options{
+			Log: log, Redis: redisPinger{rdb}, Version: version, Hub: h, Registry: reg,
+			AllowedOrigins: cfg.AllowedOrigins,
+		}),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
+
+	go h.RunSubscriber(ctx, subClient, "orders.new", "orders.status")
 
 	go func() {
 		log.Info("realtime_startup", "port", cfg.Port, "version", version)
@@ -66,6 +82,7 @@ func main() {
 
 	<-ctx.Done()
 	log.Info("realtime_shutdown_start")
+	h.Shutdown() // hijacked websockets are not tracked by http.Server.Shutdown
 	shutCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(shutCtx); err != nil {

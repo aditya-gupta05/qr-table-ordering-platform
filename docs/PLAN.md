@@ -33,10 +33,10 @@ Out of scope: admin CRUD, staff auth, payments, cloud deploy, CI, OpenTelemetry,
 |---|---|---|
 | 0 | Scaffold: repo layout, compose (pg+pgvector, redis, prometheus, grafana), schema/migrations, seed, logging setup | done |
 | 1 | Ordering API: menu, tables, orders, server-side pricing, idempotency, publish-after-commit | done |
-| 2 | Go realtime hub + kitchen board + diner live order status | todo |
-| 3 | Latency benchmark (p50/p95/p99 end-to-end) + Grafana dashboard | todo |
-| 4 | Ingestion + retrieval: docs (FAQ/policy/allergen/PDF menu), chunking, embeddings, HNSW, FTS + RRF hybrid, cross-encoder rerank, metadata filters, retrieval eval set | todo |
-| 5 | Chatbot: DeepSeek tool loop (`search_menu`, `get_item`, `add_to_cart`, `call_waiter`), guardrails, caching, chat UI, analytics | todo |
+| 2 | Go realtime hub + kitchen board + diner live order status | done |
+| 3 | Latency benchmark (p50/p95/p99 end-to-end) + Grafana dashboard | done |
+| 4 | Ingestion + retrieval: docs (FAQ/policy/allergen/PDF menu), chunking, embeddings, HNSW, FTS + RRF hybrid, cross-encoder rerank, metadata filters, retrieval eval set | done ([report](reports/phase-4-retrieval.md)) |
+| 5 | Chatbot: DeepSeek tool loop (`search_menu`, `search_info`, `get_item`, `add_to_cart`, `call_waiter`), guardrails, caching, chat UI, analytics | todo |
 | 6 | Frontend polish + e2e smoke test | todo |
 | 7 | Chatbot evaluation + `chatbot-eval.md` + `interview-prep.md` | todo |
 

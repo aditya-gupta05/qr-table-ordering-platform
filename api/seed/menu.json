@@ -1,5 +1,5 @@
 {
-  "restaurant": "Ember & Basil",
+  "restaurant": "Lantern Kitchen",
   "categories": [
     {
       "name": "Starters",
@@ -124,6 +124,38 @@
             "celery"
           ],
           "spice_level": 0
+        },
+        {
+          "name": "Satay Tofu Skewers",
+          "description": "Grilled turmeric tofu skewers with warm peanut sauce and pickled cucumber. The plant-based twin of our Chicken Satay.",
+          "price_cents": 1050,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "peanut",
+            "soy"
+          ],
+          "spice_level": 1
+        },
+        {
+          "name": "Butternut Squash Soup",
+          "description": "Roasted butternut squash soup with coconut cream, toasted pumpkin seeds and a drizzle of chilli oil. Naturally nut-free.",
+          "price_cents": 950,
+          "dietary_tags": [
+            "vegan",
+            "vegetarian",
+            "gluten_free",
+            "dairy_free",
+            "halal"
+          ],
+          "allergens": [
+            "celery"
+          ],
+          "spice_level": 1
         }
       ]
     },
@@ -221,6 +253,21 @@
             "celery"
           ],
           "spice_level": 0
+        },
+        {
+          "name": "Pad Thai",
+          "description": "Stir-fried rice noodles with prawns, egg, bean sprouts, tamarind and crushed roasted peanuts. Finished with fish sauce and a lime wedge.",
+          "price_cents": 2000,
+          "dietary_tags": [
+            "dairy_free"
+          ],
+          "allergens": [
+            "peanut",
+            "egg",
+            "fish",
+            "shellfish"
+          ],
+          "spice_level": 1
         }
       ]
     },
@@ -482,6 +529,33 @@
             "halal"
           ],
           "allergens": [],
+          "spice_level": 0
+        },
+        {
+          "name": "Pistachio Kulfi",
+          "description": "Dense, slow-set Indian ice cream flavoured with cardamom and pistachios, served on a rose syrup. Contains tree nuts but no peanuts.",
+          "price_cents": 900,
+          "dietary_tags": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "allergens": [
+            "dairy",
+            "tree_nut"
+          ],
+          "spice_level": 0
+        },
+        {
+          "name": "Spiced Apple Crumble",
+          "description": "Baked apples with cinnamon, cloves and a pinch of nutmeg under an oat crumble, served with custard. Nutmeg is a spice, not a nut.",
+          "price_cents": 950,
+          "dietary_tags": [
+            "vegetarian"
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
           "spice_level": 0
         }
       ]

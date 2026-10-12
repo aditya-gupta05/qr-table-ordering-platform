@@ -1,8 +1,10 @@
+import os
+
 import redis.asyncio as aioredis
 import structlog
 from fastapi import APIRouter, Response
 from fastapi.responses import JSONResponse
-from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
+from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, generate_latest, multiprocess
 from sqlalchemy import text
 
 from app.config import get_settings
@@ -44,4 +46,10 @@ async def readyz() -> JSONResponse:
 
 @router.get("/metrics", include_in_schema=False)
 async def metrics() -> Response:
+    if os.environ.get("PROMETHEUS_MULTIPROC_DIR"):
+        # Several uvicorn workers: each writes its own mmap files; aggregate them per scrape on a
+        # fresh registry (a long-lived one would register the collector twice).
+        registry = CollectorRegistry()
+        multiprocess.MultiProcessCollector(registry)
+        return Response(generate_latest(registry), media_type=CONTENT_TYPE_LATEST)
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)

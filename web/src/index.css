@@ -1,1 +1,79 @@
 @import "tailwindcss";
+
+/* Two faces, clearly distinct: Fraunces for names and headings (a soft, old-style serif that
+   reads like a printed menu), Atkinson Hyperlegible for everything you read while eating
+   or glancing across a kitchen. Loaded from Google Fonts in index.html. */
+@theme {
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, sans-serif;
+
+  /* Diner: card-stock paper, ink, chili accent (spice and allergen warnings share it). */
+  --color-paper: #f3f1ea;
+  --color-paper-2: #e7e5da;
+  --color-ink: #1d2622;
+  --color-ink-soft: #4e5a54;
+  --color-rule: #cfd1c4;
+  --color-chili: #a92e26;
+  --color-chili-soft: #f4dcd7;
+  --color-sage: #2f5e4a;
+  --color-sage-soft: #dce7dd;
+  --color-turmeric: #e9b42f;
+
+  /* Kitchen: a dark board, because the pass is bright and the screen is read from across the room. */
+  --color-board: #0f1a16;
+  --color-lane: #16231e;
+  --color-tile: #203129;
+  --color-chalk: #f5f2e7;
+  --color-chalk-dim: #a9b8ae;
+  --color-kit-new: #f4c64e;
+  --color-kit-cook: #f08a4b;
+  --color-kit-ready: #7cd3a5;
+  --color-kit-late: #ff6b5b;
+}
+
+@theme {
+  --animate-arrive: arrive 4s ease-out;
+}
+
+@keyframes arrive {
+  from {
+    box-shadow: 0 0 0 8px var(--color-kit-new);
+  }
+  to {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
